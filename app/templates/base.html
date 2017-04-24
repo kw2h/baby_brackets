@@ -1,0 +1,60 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Baby Brackets</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!-- <link href="/static/css/selectize.css" rel="stylesheet"> -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="/static/js/selectize.js"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  </head>
+  <body>
+    <div class="header">
+      <nav>
+        <ul class="nav nav-pills">
+          <li role="presentation"
+          {% if active_page == 'index' %}
+            class="active" ><a href="#">Home</a>
+          {% else %}
+            ><a href="{{ url_for('index') }}">Home</a>
+          {% endif %}
+          </li>
+          {% if g.user.is_authenticated %}
+            <li role="presentation">
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </li>
+          {% else %}
+            <li role="presentation"
+            {% if active_page == 'register' %}
+              class="active" ><a href="{{ url_for('register') }}">Sign Up</a>
+            {% else %}
+              ><a href="{{ url_for('register') }}">Sign Up</a>
+            </li>
+            {% endif %}
+            <li role="presentation"
+            {% if active_page == 'login' %}
+              class="active" ><a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+              ><a href="{{ url_for('login') }}">Login</a>
+            </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container-fluid">
+        <p class="text-muted">Baby Brackets 2017  <a href="mailto:baby.brackets@gmail.com"> Contact Us</a></p>
+      </div>
+    </footer>
+
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "create" %}
+{% block content %}
+  {% include 'flash.html' %}
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Create a Baby Name Bracket</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form" action="" method="post" name="post">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_field(form.name,placeholder="Bracket Name", class_="form-control") }}
+          {# wtf.form_field(form.parent, class_="form-control") #}
+          <!-- <p class="help-block"><small>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspLeave unchecked if you want someone else to choose the names in the bracket</small></p> -->
+          <p><input type="submit" class="btn btn-lg btn-primary" value="Submit"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
