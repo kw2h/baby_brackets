@@ -14,7 +14,7 @@
   <body>
     <div class="header">
       <nav>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-pills pull-right">
           <li role="presentation"
           {% if active_page == 'index' %}
             class="active" ><a href="#">Home</a>
@@ -23,6 +23,26 @@
           {% endif %}
           </li>
           {% if g.user.is_authenticated %}
+            <li role="presentation"
+            {% if active_page == 'create' %}
+              class="active" ><a href="#">Create</a>
+            {% else %}
+              ><a href="{{ url_for('create') }}">Create</a>
+            {% endif %}
+            </li>
+            <li role="presentation" class="dropdown {% if active_page == 'edit' %}active{% endif %}">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                My Brackets <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {% for bracket in g.user.parent_brackets %}
+                  <li><a href="{{ url_for('edit', bracket_id=bracket.id) }}">{{ bracket.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li role="presentation">
+              <a href="#">My Picks</a>
+            </li>
             <li role="presentation">
               <a href="{{ url_for('logout') }}">Logout</a>
             </li>
@@ -44,6 +64,10 @@
           {% endif %}
         </ul>
       </nav>
+      <h3 class="text-muted">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" width="48" height="48" class="d-inline-block align-top" alt="">
+        &nbsp;&nbsp;Baby Brackets
+      </h3>
     </div>
     <div class="container-fluid">
       <div class="row">

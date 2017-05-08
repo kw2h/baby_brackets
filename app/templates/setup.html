@@ -1,0 +1,157 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "create" %}
+{% block content %}
+  {% include 'flash.html' %}
+  <div class="col-md-12">
+    <form class="form" action="" method="post" name="post">
+      {{ form.hidden_tag() }}
+      <div class="row">
+        <div class="col-md-2">
+          {{ wtf.form_field(form.size, class_="form-control") }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a data-toggle="collapse" href="#collapse-east"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> East Regional</a></h3>
+            </div>
+            <div class="panel-body panel-collapse collapse" id="collapse-east">
+              <p>{{ form.name1(size=30, maxlength=140, class='form-control', placeholder='1 Seed') }}</p>
+              <p>{{ form.name5(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
+              <p>{{ form.name9(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
+              <p>{{ form.name13(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
+              <p>{{ form.name17(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <p>{{ form.name21(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
+              <p>{{ form.name25(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
+              <p>{{ form.name29(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
+              <p>{{ form.name33(size=30, maxlength=140, class='form-control hide32', placeholder='9 Seed') }}</p>
+              <p>{{ form.name37(size=30, maxlength=140, class='form-control hide32', placeholder='10 Seed') }}</p>
+              <p>{{ form.name41(size=30, maxlength=140, class='form-control hide32', placeholder='11 Seed') }}</p>
+              <p>{{ form.name45(size=30, maxlength=140, class='form-control hide32', placeholder='12 Seed') }}</p>
+              <p>{{ form.name49(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
+              <p>{{ form.name53(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
+              <p>{{ form.name57(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
+              <p>{{ form.name61(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a data-toggle="collapse" href="#collapse-west"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> West Regional</a></h3>
+            </div>
+            <div class="panel-body panel-collapse collapse" id="collapse-west">
+              <p>{{ form.name2(size=30, maxlength=140, class='form-control', placeholder='1 Seed') }}</p>
+              <p>{{ form.name6(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
+              <p>{{ form.name10(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
+              <p>{{ form.name14(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
+              <p>{{ form.name18(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <p>{{ form.name22(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
+              <p>{{ form.name26(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
+              <p>{{ form.name30(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
+              <p>{{ form.name34(size=30, maxlength=140, class='form-control hide32', placeholder='9 Seed') }}</p>
+              <p>{{ form.name38(size=30, maxlength=140, class='form-control hide32', placeholder='10 Seed') }}</p>
+              <p>{{ form.name42(size=30, maxlength=140, class='form-control hide32', placeholder='11 Seed') }}</p>
+              <p>{{ form.name46(size=30, maxlength=140, class='form-control hide32', placeholder='12 Seed') }}</p>
+              <p>{{ form.name50(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
+              <p>{{ form.name54(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
+              <p>{{ form.name58(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
+              <p>{{ form.name62(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a data-toggle="collapse" href="#collapse-midwest"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Midwest Regional</a></h3>
+            </div>
+            <div class="panel-body panel-collapse collapse" id="collapse-midwest">
+              <p>{{ form.name3(size=30, maxlength=140, class='form-control', placeholder='1 Seed') }}</p>
+              <p>{{ form.name7(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
+              <p>{{ form.name11(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
+              <p>{{ form.name15(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
+              <p>{{ form.name19(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <p>{{ form.name23(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
+              <p>{{ form.name27(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
+              <p>{{ form.name31(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
+              <p>{{ form.name35(size=30, maxlength=140, class='form-control hide32', placeholder='9 Seed') }}</p>
+              <p>{{ form.name39(size=30, maxlength=140, class='form-control hide32', placeholder='10 Seed') }}</p>
+              <p>{{ form.name43(size=30, maxlength=140, class='form-control hide32', placeholder='11 Seed') }}</p>
+              <p>{{ form.name47(size=30, maxlength=140, class='form-control hide32', placeholder='12 Seed') }}</p>
+              <p>{{ form.name51(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
+              <p>{{ form.name55(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
+              <p>{{ form.name59(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
+              <p>{{ form.name63(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><a data-toggle="collapse" href="#collapse-south"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> South Regional</a></h3>
+            </div>
+            <div class="panel-body panel-collapse collapse" id="collapse-south">
+              <p>{{ form.name4(size=30, maxlength=140, class='form-control', placeholder='1 Seed') }}</p>
+              <p>{{ form.name8(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
+              <p>{{ form.name12(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
+              <p>{{ form.name16(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
+              <p>{{ form.name20(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <p>{{ form.name24(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
+              <p>{{ form.name28(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
+              <p>{{ form.name32(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
+              <p>{{ form.name36(size=30, maxlength=140, class='form-control hide32', placeholder='9 Seed') }}</p>
+              <p>{{ form.name40(size=30, maxlength=140, class='form-control hide32', placeholder='10 Seed') }}</p>
+              <p>{{ form.name44(size=30, maxlength=140, class='form-control hide32', placeholder='11 Seed') }}</p>
+              <p>{{ form.name48(size=30, maxlength=140, class='form-control hide32', placeholder='12 Seed') }}</p>
+              <p>{{ form.name52(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
+              <p>{{ form.name56(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
+              <p>{{ form.name60(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
+              <p>{{ form.name64(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p><input type="submit" class="btn btn-lg btn-primary" value="Submit"></p>
+    </form>
+  </div>
+<script type="text/javascript">
+$(document).ready(function() {
+  // change icon from plus to minus on click
+  $('.collapse').on('shown.bs.collapse', function(){
+  $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+  }).on('hidden.bs.collapse', function(){
+  $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+  });
+
+  // only show first 16 name inputs by default
+  var selectBox = document.getElementById("size");
+  $('.hide16').hide();
+  $('.hide32').hide();
+
+  // listen for size selection and update number of name inputs shown
+  selectBox.onchange = function(){
+    var selected = selectBox.options[selectBox.selectedIndex].value;
+
+    if(selected === '16'){
+      $('.hide16').hide();
+      $('.hide32').hide();
+    }
+    else if(selected === '32'){
+      $('.hide16').show();
+      $('.hide32').hide();
+    } else {
+      $('.hide16').show();
+      $('.hide32').show();
+    }
+  }
+
+
+
+});
+</script>
+{% endblock %}
