@@ -8,4 +8,5 @@ SQLAlchemy==1.1.9
 Flask_WTF==0.14.2
 Werkzeug==0.12.1
 Flask_Login==0.4.0
+hashids==1.2.0
 sqlalchemy_migrate==0.11.0

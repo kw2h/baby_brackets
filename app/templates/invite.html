@@ -1,0 +1,35 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = "create" %}
+{% block content %}
+{% include 'flash.html' %}
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title"><b>Share your pool with friends & family</b></h3>
+        </div>
+        <div class="panel-body">
+          <div class="input-group copyGroup">
+            <span class="input-group-addon">Share link</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybracket.com/pool/{{ bracket_hash }}">
+            <span class="input-group-btn copyButton" id="basic-addon2"><button class="btn btn-default" type="button" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard!"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$( document ).ready(function() {
+  // copy share link text to clipboard
+  $('span.copyButton').click(function() {
+    $('#copyTarget').focus().select()
+    document.execCommand("copy");
+  });
+  $('.btn').popover();
+});
+</script>
+{% endblock %}

@@ -2,6 +2,9 @@ from .models import *
 from math import ceil
 
 def get_nameids(match_id, size):
+    ''' Return input id of teams playing each other in the first round as a
+        tuple given a match_id and bracket size
+    '''
     dict16 = {1:(1,13), 2:(2,14), 3:(3,15), 4:(4,16), 5:(5,9), 6:(6,10), 7:(7,11), 8:(8,12)}
     dict32 = {1:(1,13), 2:(2,14), 3:(3,15), 4:(4,16), 5:(5,9), 6:(6,10), 7:(7,11), 8:(8,12)}
     dict64 = {1:(1,13), 2:(2,14), 3:(3,15), 4:(4,16), 5:(5,9), 6:(6,10), 7:(7,11), 8:(8,12)}
@@ -9,6 +12,7 @@ def get_nameids(match_id, size):
     return size_dict[size][match_id]
 
 def get_region(match_id):
+    ''' Return region given match_id '''
     if match_id in (1,5):
         return 'a -east'
     elif match_id in (2,6):
@@ -18,7 +22,12 @@ def get_region(match_id):
     else:
         return 'd - south'
 
-def bracketMaker(bracket_id, size, form, db):
+def parentBracketMaker(bracket_id, size, form, db):
+    ''' Create the Matchups for a bracket given dict of inputs from form. Form
+        inputs are used to create names which are then assigned to first round
+        Matchups. Matchups in rounds > 1 are created without name1 or name2
+        assigned.
+    '''
     for i in range(1, size/2 + 1):
         region = get_region(i)
         nm1_id,nm2_id = get_nameids(i, size) # get mapping from form input to match_id
@@ -52,3 +61,19 @@ def bracketMaker(bracket_id, size, form, db):
         db.session.add(match7)
 
     db.session.commit()
+
+def userBracketMaker(refer_bracket_id, user_bracket_id, db):
+    ''' Duplicate all the Matchups in refer_bracket_id with bracket_id
+        replaced with user_bracket_id and no winners set
+    '''
+    parent_matchups = Matchups.query.filter_by(bracket_id=refer_bracket_id).all()
+    for m in parent_matchups:
+        if m.rnd == 1:
+            m = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
+                         name1_id=m.name1_id, name2_id=m.name2_id, region=m.region,
+                         rnd=m.rnd)
+        else:
+            m = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
+                          region=m.region, rnd=m.rnd)
+        db.session.add(m)
+        db.session.commit()

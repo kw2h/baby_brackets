@@ -14,7 +14,7 @@
           {{ wtf.form_field(form.user_name,placeholder="User Name", class_="form-control") }}
           {{ wtf.form_field(form.password,placeholder="Password", class_="form-control") }}
           <p><input type="submit" class="btn btn-lg btn-primary" value="Submit"></p>
-          <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a></p>
+          <p>Don't have an account? <a href="{{ url_for('register') }}{{ '?referral='~referral if referral is not none }}">Sign up here</a></p>
         </form>
       </div>
     </div>

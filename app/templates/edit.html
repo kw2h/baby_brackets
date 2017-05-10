@@ -43,7 +43,7 @@ li.game{
 
   li.game.winner{
     font-weight:bold;
-    color:green;
+    color: #337ab7;
   }
   li.game span{
     float:right;
@@ -61,7 +61,22 @@ li.game{
     border-top:1px solid #aaa;
   }
 </style>
-<h4>{{ round1[0].bracket.name }}</h4>
+{% if parent_flag %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="input-group copyGroup">
+      <span class="input-group-addon">Share link</span>
+      <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybracket.com/pool/{{ bracket_hash }}">
+      <span class="input-group-btn copyButton" id="basic-addon2"><button class="btn btn-default" type="button" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard!"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button></span>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="row">
+  <div class="col-md-4">
+    <h2><span class="label label-primary">{{ round1[0].bracket.name }}</span></h2>
+  </div>
+</div>
 <main id="tournament">
 	<ul class="round round-1">
 		<li class="spacer">&nbsp;</li>
@@ -186,6 +201,12 @@ $( document ).ready(function() {
     // add winner class to clicked name to format bold and color
     $(this).addClass('winner')
   });
+  // copy share link text to clipboard
+  $('span.copyButton').click(function() {
+    $('#copyTarget').focus().select()
+    document.execCommand("copy");
+  });
+  $('.btn').popover();
 });
 </script>
 {% endblock %}

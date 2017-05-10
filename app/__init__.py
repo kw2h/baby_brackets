@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_admin import Admin
+from hashids import Hashids
 import warnings
 from flask.exthook import ExtDeprecationWarning
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_USERNAME, MAIL_PASSWORD
@@ -18,7 +19,12 @@ lm.init_app(app)
 lm.login_view = 'login'
 mail = Mail(app)
 bootstrap = Bootstrap(app)
+hashids = Hashids(salt="gb1BDBxRVtqgsG9O")
 warnings.simplefilter('ignore', ExtDeprecationWarning)
 
+def hashidEncode(x):
+    return hashids.encode(x)
+
+app.jinja_env.globals.update(hashidEncode=hashidEncode)
 
 from app import views, models

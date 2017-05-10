@@ -1,9 +1,10 @@
 from flask_wtf import Form
 from wtforms import StringField, BooleanField, TextAreaField, PasswordField, \
-                    SubmitField, SelectField, SelectMultipleField
+                    SubmitField, SelectField, SelectMultipleField, HiddenField
 from wtforms.fields.html5 import DateField, EmailField
 from wtforms.validators import InputRequired, DataRequired, Length, Email, \
                                EqualTo
+from models import User
 
 class LoginForm(Form):
     user_name = StringField('', validators=[DataRequired()])
@@ -19,7 +20,21 @@ class RegisterForm(Form):
                              EqualTo('pw_confirm', 'Passwords must match')])
     pw_confirm = PasswordField('')
     email = EmailField('', [DataRequired(), Email()])
+    referral = HiddenField()
     submit = SubmitField('Submit')
+
+    def validate(self):
+        if not Form.validate(self):
+            return False
+        user = User.query.filter_by(user_name=self.user_name.data).first()
+        user_email = User.query.filter_by(email=self.email.data).first()
+        if user != None:
+            self.user_name.errors.append('User name already taken.')
+            return False
+        elif user_email != None:
+            self.email.errors.append('Email address already associated with a user name.')
+            return False
+        return True
 
 class CreateForm(Form):
     name = StringField('', validators=[DataRequired()])
@@ -28,7 +43,10 @@ class CreateForm(Form):
 
 class EditForm(Form):
     size = SelectField('Bracket Size',
-                       choices=[('16','16'),('32','32'),('64','64')],
+                       choices=[('16','16'),
+                           #    ('32','32'),
+                           #    ('64','64')
+                               ],
                        validators=[DataRequired()])
     name1 = StringField('1 Seed')
     name2 = StringField('1 Seed')

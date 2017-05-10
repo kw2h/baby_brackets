@@ -12,62 +12,71 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   </head>
   <body>
-    <div class="header">
-      <nav>
-        <ul class="nav nav-pills pull-right">
-          <li role="presentation"
-          {% if active_page == 'index' %}
-            class="active" ><a href="#">Home</a>
-          {% else %}
-            ><a href="{{ url_for('index') }}">Home</a>
-          {% endif %}
-          </li>
-          {% if g.user.is_authenticated %}
+    <div class="container-fluid">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
             <li role="presentation"
-            {% if active_page == 'create' %}
-              class="active" ><a href="#">Create</a>
+            {% if active_page == 'index' %}
+              class="active" ><a href="#">Home</a>
             {% else %}
-              ><a href="{{ url_for('create') }}">Create</a>
+              ><a href="{{ url_for('index') }}">Home</a>
             {% endif %}
             </li>
-            <li role="presentation" class="dropdown {% if active_page == 'edit' %}active{% endif %}">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                My Brackets <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                {% for bracket in g.user.parent_brackets %}
-                  <li><a href="{{ url_for('edit', bracket_id=bracket.id) }}">{{ bracket.name }}</a></li>
-                {% endfor %}
-              </ul>
-            </li>
-            <li role="presentation">
-              <a href="#">My Picks</a>
-            </li>
-            <li role="presentation">
-              <a href="{{ url_for('logout') }}">Logout</a>
-            </li>
-          {% else %}
-            <li role="presentation"
-            {% if active_page == 'register' %}
-              class="active" ><a href="{{ url_for('register') }}">Sign Up</a>
+            {% if g.user.is_authenticated %}
+              <li role="presentation"
+              {% if active_page == 'create' %}
+                class="active" ><a href="#">Create</a>
+              {% else %}
+                ><a href="{{ url_for('create') }}">Create</a>
+              {% endif %}
+              </li>
+              <li role="presentation" class="dropdown {% if active_page == 'edit' and parent_flag %}active{% endif %}">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  My Brackets <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  {% for bracket in g.user.parent_brackets.filter_by(user_id=None) %}
+                    <li><a href="{{ url_for('edit', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li role="presentation" class="dropdown {% if active_page == 'edit' and not parent_flag %}active{% endif %}">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  My Picks <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  {% for bracket in g.user.user_brackets %}
+                    <li><a href="{{ url_for('edit', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li role="presentation">
+                <a href="{{ url_for('logout') }}">Logout</a>
+              </li>
             {% else %}
-              ><a href="{{ url_for('register') }}">Sign Up</a>
-            </li>
+              <li role="presentation"
+              {% if active_page == 'register' %}
+                class="active" ><a href="{{ url_for('register') }}">Sign Up</a>
+              {% else %}
+                ><a href="{{ url_for('register') }}">Sign Up</a>
+              </li>
+              {% endif %}
+              <li role="presentation"
+              {% if active_page == 'login' %}
+                class="active" ><a href="{{ url_for('login') }}">Login</a>
+              {% else %}
+                ><a href="{{ url_for('login') }}">Login</a>
+              </li>
+              {% endif %}
             {% endif %}
-            <li role="presentation"
-            {% if active_page == 'login' %}
-              class="active" ><a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-              ><a href="{{ url_for('login') }}">Login</a>
-            </li>
-            {% endif %}
-          {% endif %}
-        </ul>
-      </nav>
-      <h3 class="text-muted">
-        <img src="{{ url_for('static', filename='img/logo.png') }}" width="48" height="48" class="d-inline-block align-top" alt="">
-        &nbsp;&nbsp;Baby Brackets
-      </h3>
+          </ul>
+        </nav>
+        <h3 class="text-muted">
+          <img src="{{ url_for('static', filename='img/logo.png') }}" width="48" height="48" class="d-inline-block align-top" alt="">
+          &nbsp;&nbsp;Baby Brackets
+        </h3>
+      </div>
     </div>
     <div class="container-fluid">
       <div class="row">
@@ -79,6 +88,5 @@
         <p class="text-muted">Baby Brackets 2017  <a href="mailto:baby.brackets@gmail.com"> Contact Us</a></p>
       </div>
     </footer>
-
   </body>
 </html>

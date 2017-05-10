@@ -15,7 +15,8 @@ class User(db.Model):
     login_ct = Column(Integer)
     created = Column(DateTime)
     last_seen = Column(DateTime)
-    parent_brackets = db.relationship('Bracket', backref='parent', lazy='dynamic')
+    parent_brackets = db.relationship('Bracket', foreign_keys='Bracket.parent_id', backref='parent', lazy='dynamic')
+    user_brackets = db.relationship('Bracket', foreign_keys='Bracket.user_id', backref='user', lazy='dynamic')
 
     def __init__(self, user_name, password, first_name,
                  last_name, email, role_id, created):
@@ -58,6 +59,7 @@ class Bracket(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(96))
     parent_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
     matchups = db.relationship('Matchups', backref='bracket', lazy='dynamic')
 
     def __repr__(self):

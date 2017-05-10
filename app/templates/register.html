@@ -12,6 +12,7 @@
       <div class="panel-body">
         <form class="form" action="" method="post" name="post">
           {{ form.hidden_tag() }}
+          {{ form.referral }}
           {{ wtf.form_field(form.user_name,placeholder="User Name", class_="form-control") }}
           {{ wtf.form_field(form.first_name,placeholder="First Name", class_="form-control") }}
           {{ wtf.form_field(form.last_name,placeholder="Last Name", class_="form-control") }}

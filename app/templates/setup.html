@@ -3,7 +3,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% set active_page = "create" %}
 {% block content %}
-  {% include 'flash.html' %}
+{% include 'flash.html' %}
   <div class="col-md-12">
     <form class="form" action="" method="post" name="post">
       {{ form.hidden_tag() }}

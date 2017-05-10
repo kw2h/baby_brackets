@@ -1,24 +1,28 @@
 from flask import render_template, flash, redirect, session, url_for, request, \
                   g, Markup, jsonify, json
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_admin.contrib.sqla import ModelView
+from flask_admin.base import MenuLink
 from datetime import datetime
-from app import app, db, lm, admin
+from app import app, db, lm, admin, hashids
 from config import ADMINS
 from .models import *
 from .forms import *
-from .bracket import bracketMaker
+from .bracket import parentBracketMaker, userBracketMaker
+from .admin import AdminModelView
 
-class AdminModelView(ModelView):
-    def is_accessible(self):
-        """Return True if user is logged in and an administrator"""
-        return g.user is not None and g.user.is_authenticated and g.user.id in ADMINS
-
-    def inaccessible_callback(self, name, **kwargs):
-        """Redirect to login page if user doesn't have access"""
-        return redirect(url_for('login', next=request.url))
-
+admin.add_link(MenuLink(name='Back to Baby Brackets', url='/'))
 admin.add_view(AdminModelView(User, db.session))
+admin.add_view(AdminModelView(Bracket, db.session))
+admin.add_view(AdminModelView(Names, db.session))
+admin.add_view(AdminModelView(Matchups, db.session))
+
+def redirect_dest(fallback):
+    dest = request.args.get('next')
+    try:
+        dest_url = url_for(dest)
+    except:
+        return redirect(fallback)
+    return redirect(dest_url)
 
 @lm.user_loader
 def load_user(id):
@@ -61,6 +65,7 @@ def register():
     form = RegisterForm()
 
     if request.method == 'GET':
+        form.referral.data = request.args.get('referral')
         return render_template('register.html', form=form)
 
     # validate form submission
@@ -76,7 +81,10 @@ def register():
         db.session.commit()
         login_user(u)
         flash('Thank you for signing up!')
-        return redirect(url_for('index'))
+        if form.referral is not None or form.referral != '':
+            return redirect(url_for('pool', refer_bracket_hash=form.referral.data))
+        else:
+            return redirect(url_for('index'))
 
     return render_template('register.html', form=form)
 
@@ -101,19 +109,21 @@ def create():
         b = Bracket(name=name, parent_id=g.user.id)
         db.session.add(b)
         db.session.commit()
-        return redirect(url_for('setup',bracket_id=b.id))
+        bracket_hash = hashids.encode(b.id)
+        return redirect(url_for('setup',bracket_hash=bracket_hash))
     return render_template('create.html', form=form)
 
 
-@app.route('/setup/<int:bracket_id>', methods=['GET', 'POST'])
+@app.route('/setup/<bracket_hash>', methods=['GET', 'POST'])
 @login_required
-def setup(bracket_id):
+def setup(bracket_hash):
     """Route for Setup Bracket Page"""
     # if user not logged in, redirect to login page
     if not g.user.is_authenticated:
         flash('Please login to continue')
         return redirect(url_for('login'))
 
+    bracket_id = hashids.decode(bracket_hash)[0]
     form = EditForm()
 
     if request.method == 'GET':
@@ -124,23 +134,57 @@ def setup(bracket_id):
     if form.validate_on_submit():
         size = int(request.form['size'])
 
-        bracketMaker(bracket_id, size, request.form, db)
+        parentBracketMaker(bracket_id, size, request.form, db)
 
         flash('Bracket Saved!')
-        return redirect(url_for('edit', bracket_id=bracket_id))
+        return redirect(url_for('invite', bracket_hash=bracket_hash))
     return render_template('setup.html', form=form)
 
 
-@app.route('/edit/<int:bracket_id>')
+@app.route('/invite/<bracket_hash>')
 @login_required
-def edit(bracket_id):
+def invite(bracket_hash):
+    """Route for Page to Invite Pool Participants"""
+    # if user not logged in, redirect to login page
+    if not g.user.is_authenticated:
+        flash('Please login to continue')
+        return redirect(url_for('login'))
+
+    return render_template('invite.html', bracket_hash=bracket_hash)
+
+
+@app.route('/pool/<refer_bracket_hash>')
+@login_required
+def pool(refer_bracket_hash):
+    """Route for Page to Enter Pool"""
+    # if user not logged in, redirect to login page
+    if g.user.is_authenticated:
+        refer_bracket_id = hashids.decode(refer_bracket_hash)[0]
+        refer_bracket = Bracket.query.filter_by(id=refer_bracket_id).first()
+        b = Bracket(name=refer_bracket.name, parent_id=refer_bracket.parent.id,
+                    user_id=g.user.id)
+        db.session.add(b)
+        db.session.commit()
+        userBracketMaker(refer_bracket_id, b.id, db)
+        bracket_hash = hashids.encode(b.id)
+        return redirect(url_for('edit', bracket_hash=bracket_hash))
+    else:
+        return render_template('login.html')
+
+
+@app.route('/edit/<bracket_hash>')
+@login_required
+def edit(bracket_hash):
     """Route for View Bracket Page"""
     # if user not logged in, redirect to login page
     if not g.user.is_authenticated:
         flash('Please login to continue')
         return redirect(url_for('login'))
 
-    #b = Bracket.query.filter_by(id=bracket_id).first()
+    bracket_id = hashids.decode(bracket_hash)[0]
+
+    b = Bracket.query.filter_by(id=bracket_id).first()
+    parent_flag = b.parent == g.user
 
     round1 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=1)\
              .order_by(Matchups.region).all()
@@ -151,7 +195,8 @@ def edit(bracket_id):
     round4 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=4)\
              .order_by(Matchups.region).all()
     return render_template('edit.html', round1=round1, round2=round2,
-                           round3=round3, round4=round4, bracket_id=bracket_id)
+                           round3=round3, round4=round4,
+                           bracket_hash=bracket_hash, parent_flag=parent_flag)
 
 @app.route('/api/edit', methods=['POST'])
 @login_required
@@ -179,12 +224,15 @@ def login():
     """Route for Login Page"""
     # if user already logged in, redirect to main page
     if g.user is not None and g.user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect_dest(url_for('index'))
 
     form = LoginForm()
 
     if request.method == 'GET':
-        return render_template('login.html', form=form)
+        referral = request.args.get('next').replace('/pool/','')
+        print referral
+        return render_template('login.html', form=form,
+                               referral=referral)
 
     # validate form submission
     if form.validate_on_submit():
@@ -196,12 +244,15 @@ def login():
             flash('User name not found')
             return redirect(url_for('login'))
         elif u.check_password(password):
-            u.login_ct += 1
+            if u.login_ct is None:
+                u.login_ct = 1
+            else:
+                u.login_ct += 1
             u.last_login = datetime.now()
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect(url_for('index'))
+            return redirect_dest(url_for('index'))
         else:
             flash('User name or password incorrect')
             return redirect(url_for('login'))
