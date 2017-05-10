@@ -18,6 +18,3 @@ MAIL_USE_TLS = True
 MAIL_USERNAME = 'baby.brackets@gmail.com'
 MAIL_PASSWORD = 'fuckitletsdoitlive'# os.environ.get('MAIL_PASSWORD')
 MAIL_DEFAULT_SENDER = 'baby.brackets@gmail.com'
-
-# administrator list
-ADMINS = [1]

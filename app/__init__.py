@@ -8,7 +8,7 @@ from flask_admin import Admin
 from hashids import Hashids
 import warnings
 from flask.exthook import ExtDeprecationWarning
-from config import basedir, ADMINS, MAIL_SERVER, MAIL_USERNAME, MAIL_PASSWORD
+from config import basedir, MAIL_SERVER, MAIL_USERNAME, MAIL_PASSWORD
 
 app = Flask(__name__)
 app.config.from_object('config')

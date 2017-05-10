@@ -4,7 +4,6 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_admin.base import MenuLink
 from datetime import datetime
 from app import app, db, lm, admin, hashids
-from config import ADMINS
 from .models import *
 from .forms import *
 from .bracket import parentBracketMaker, userBracketMaker
@@ -229,8 +228,8 @@ def login():
     form = LoginForm()
 
     if request.method == 'GET':
-        referral = request.args.get('next').replace('/pool/','')
-        print referral
+        nextarg = request.args.get('next')
+        referral = nextarg.replace('/pool/','') if nextarg else None
         return render_template('login.html', form=form,
                                referral=referral)
 
