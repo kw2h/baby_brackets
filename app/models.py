@@ -60,10 +60,12 @@ class Bracket(db.Model):
     name = Column(String(96))
     parent_id = Column(Integer, ForeignKey('user.id'))
     user_id = Column(Integer, ForeignKey('user.id'))
+    scoring_bracket_id = Column(Integer, ForeignKey('bracket.id'))
+    scoring_bracket = db.relationship('Bracket', backref='pool', remote_side=[id])
     matchups = db.relationship('Matchups', backref='bracket', lazy='dynamic')
 
     def __repr__(self):
-        return str(self.id)
+        return str(self.name)
 
 class Names(db.Model):
     id = Column(Integer, primary_key=True)
@@ -86,4 +88,4 @@ class Matchups(db.Model):
     winner_id = Column(Integer, ForeignKey('names.id'))
 
     def __repr__(self):
-        return self.match_id
+        return 'Bracket:%d, Match ID:%d' % (self.match_id, self.match_id)

@@ -16,12 +16,7 @@ admin.add_view(AdminModelView(Names, db.session))
 admin.add_view(AdminModelView(Matchups, db.session))
 
 def redirect_dest(fallback):
-    dest = request.args.get('next')
-    try:
-        dest_url = url_for(dest)
-    except:
-        return redirect(fallback)
-    return redirect(dest_url)
+    return request.args.get('next') or fallback
 
 @lm.user_loader
 def load_user(id):
@@ -160,8 +155,9 @@ def pool(refer_bracket_hash):
     if g.user.is_authenticated:
         refer_bracket_id = hashids.decode(refer_bracket_hash)[0]
         refer_bracket = Bracket.query.filter_by(id=refer_bracket_id).first()
-        b = Bracket(name=refer_bracket.name, parent_id=refer_bracket.parent.id,
-                    user_id=g.user.id)
+        b = Bracket(name='%s (%s)' % (refer_bracket.name, g.user.user_name),
+                    parent_id=refer_bracket.parent.id,
+                    user_id=g.user.id, scoring_bracket_id=refer_bracket_id)
         db.session.add(b)
         db.session.commit()
         userBracketMaker(refer_bracket_id, b.id, db)
@@ -223,7 +219,7 @@ def login():
     """Route for Login Page"""
     # if user already logged in, redirect to main page
     if g.user is not None and g.user.is_authenticated:
-        return redirect_dest(url_for('index'))
+        return redirect(redirect_dest(url_for('index')))
 
     form = LoginForm()
 
@@ -251,10 +247,10 @@ def login():
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect_dest(url_for('index'))
+            return redirect(redirect_dest(url_for('index')))
         else:
             flash('User name or password incorrect')
-            return redirect(url_for('login'))
+            return redirect(redirect_dest(url_for('login')))
 
 
     return render_template('login.html', form=form)

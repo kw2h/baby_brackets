@@ -77,3 +77,7 @@ def userBracketMaker(refer_bracket_id, user_bracket_id, db):
                           region=m.region, rnd=m.rnd)
         db.session.add(m)
         db.session.commit()
+
+def scoreBracket(bracket_id):
+     b = Bracket.query.filter_by(id=bracket_id).first()
+     m = Matchupsc.query.filter_by(bracket_id=bracket_id).all()
