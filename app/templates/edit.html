@@ -74,7 +74,7 @@ li.game{
 {% endif %}
 <div class="row">
   <div class="col-md-4">
-    <h2><span class="label label-primary">{{ round1[0].bracket.name }}</span></h2>
+    <h3>{{ round1[0].bracket.name }} <a href="{{ url_for('leaderboard', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">Leaderboard</a></h3>
   </div>
 </div>
 <main id="tournament">

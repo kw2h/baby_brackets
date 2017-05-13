@@ -87,11 +87,6 @@ def register():
 @login_required
 def create():
     """Route for Create Bracket Page"""
-    # if user not logged in, redirect to login page
-    if not g.user.is_authenticated:
-        flash('Please login to continue')
-        return redirect(url_for('login'))
-
     form = CreateForm()
 
     if request.method == 'GET':
@@ -112,11 +107,6 @@ def create():
 @login_required
 def setup(bracket_hash):
     """Route for Setup Bracket Page"""
-    # if user not logged in, redirect to login page
-    if not g.user.is_authenticated:
-        flash('Please login to continue')
-        return redirect(url_for('login'))
-
     bracket_id = hashids.decode(bracket_hash)[0]
     form = EditForm()
 
@@ -139,11 +129,6 @@ def setup(bracket_hash):
 @login_required
 def invite(bracket_hash):
     """Route for Page to Invite Pool Participants"""
-    # if user not logged in, redirect to login page
-    if not g.user.is_authenticated:
-        flash('Please login to continue')
-        return redirect(url_for('login'))
-
     return render_template('invite.html', bracket_hash=bracket_hash)
 
 
@@ -151,7 +136,7 @@ def invite(bracket_hash):
 @login_required
 def pool(refer_bracket_hash):
     """Route for Page to Enter Pool"""
-    # if user not logged in, redirect to login page
+    # if user logged in, redirect to login page
     if g.user.is_authenticated:
         refer_bracket_id = hashids.decode(refer_bracket_hash)[0]
         refer_bracket = Bracket.query.filter_by(id=refer_bracket_id).first()
@@ -170,12 +155,7 @@ def pool(refer_bracket_hash):
 @app.route('/edit/<bracket_hash>')
 @login_required
 def edit(bracket_hash):
-    """Route for View Bracket Page"""
-    # if user not logged in, redirect to login page
-    if not g.user.is_authenticated:
-        flash('Please login to continue')
-        return redirect(url_for('login'))
-
+    """Route for edit Bracket Page"""
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
@@ -192,6 +172,7 @@ def edit(bracket_hash):
     return render_template('edit.html', round1=round1, round2=round2,
                            round3=round3, round4=round4,
                            bracket_hash=bracket_hash, parent_flag=parent_flag)
+
 
 @app.route('/api/edit', methods=['POST'])
 @login_required
@@ -213,6 +194,20 @@ def APIedit():
     db.session.add(n)
     db.session.commit()
     return jsonify('')
+
+
+@app.route('/leaderboard/<bracket_hash>')
+@login_required
+def leaderboard(bracket_hash):
+    """Route for Leaderboard Page"""
+    bracket_id = hashids.decode(bracket_hash)[0]
+
+    b = Bracket.query.filter_by(id=bracket_id).first()
+    if b.scoring_bracket is None:
+        pool = b.pool
+    else:
+        pool = b.scoring_bracket.pool
+    return render_template('leaderboard.html', pool=pool)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

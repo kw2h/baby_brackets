@@ -69,15 +69,14 @@ def userBracketMaker(refer_bracket_id, user_bracket_id, db):
     parent_matchups = Matchups.query.filter_by(bracket_id=refer_bracket_id).all()
     for m in parent_matchups:
         if m.rnd == 1:
-            m = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
+            n = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
                          name1_id=m.name1_id, name2_id=m.name2_id, region=m.region,
-                         rnd=m.rnd)
+                         rnd=m.rnd, scoring_bracket_id=m.bracket_id,
+                         scoring_match_id=m.match_id)
         else:
-            m = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
-                          region=m.region, rnd=m.rnd)
-        db.session.add(m)
+            n = Matchups(bracket_id=user_bracket_id, match_id=m.match_id,
+                         region=m.region, rnd=m.rnd,
+                         scoring_bracket_id=m.bracket_id,
+                         scoring_match_id=m.match_id)
+        db.session.add(n)
         db.session.commit()
-
-def scoreBracket(bracket_id):
-     b = Bracket.query.filter_by(id=bracket_id).first()
-     m = Matchupsc.query.filter_by(bracket_id=bracket_id).all()

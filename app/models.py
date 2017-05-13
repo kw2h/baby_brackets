@@ -67,6 +67,22 @@ class Bracket(db.Model):
     def __repr__(self):
         return str(self.name)
 
+    def scoreBracket(self):
+        ''' Compare user's winner pick with scoring_match winner for all related
+            matchups; if the same, then add to score based on rnd
+        '''
+        score = 0
+        for matchup in self.matchups:
+            if matchup.rnd == 1 and matchup.winner == matchup.scoring_match.winner and matchup.winner is not None:
+                score += 1
+            elif matchup.rnd == 2 and matchup.winner == matchup.scoring_match.winner and matchup.winner is not None:
+                score += 2
+            elif matchup.rnd == 3 and matchup.winner == matchup.scoring_match.winner and matchup.winner is not None:
+                score += 4
+            elif matchup.rnd == 4 and matchup.winner == matchup.scoring_match.winner and matchup.winner is not None:
+                score += 8
+        return score
+
 class Names(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(96), nullable=False)
@@ -86,6 +102,13 @@ class Matchups(db.Model):
     region = Column(String(64), nullable=False)
     rnd = Column(Integer)
     winner_id = Column(Integer, ForeignKey('names.id'))
+    scoring_bracket_id = Column(Integer)
+    scoring_match_id = Column(Integer)
+    __table_args__ = (db.ForeignKeyConstraint(
+                      ['scoring_bracket_id','scoring_match_id'],
+                      ['matchups.bracket_id','matchups.match_id'],),
+                      )
+    scoring_match = db.relationship('Matchups', backref='pool_match', remote_side=[bracket_id,match_id])
 
     def __repr__(self):
-        return 'Bracket:%d, Match ID:%d' % (self.match_id, self.match_id)
+        return 'Bracket:%d %s vs. %s' % (self.bracket_id, self.name1, self.name2)
