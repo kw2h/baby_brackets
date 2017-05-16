@@ -75,7 +75,9 @@ def register():
         db.session.commit()
         login_user(u)
         flash('Thank you for signing up!')
-        if form.referral is not None or form.referral != '':
+        print form.referral.data
+        print form.referral.data != ''
+        if form.referral.data is not None and form.referral.data != '':
             return redirect(url_for('pool', refer_bracket_hash=form.referral.data))
         else:
             return redirect(url_for('index'))
