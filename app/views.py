@@ -74,7 +74,7 @@ def register():
         db.session.add(u)
         db.session.commit()
         login_user(u)
-        flash('Thank you for signing up!')
+        flash('Thank you for signing up!','success')
         print form.referral.data
         print form.referral.data != ''
         if form.referral.data is not None and form.referral.data != '':
@@ -122,9 +122,12 @@ def setup(bracket_hash):
 
         parentBracketMaker(bracket_id, size, request.form, db)
 
-        flash('Bracket Saved!')
+        flash('Bracket Saved!','success')
         return redirect(url_for('invite', bracket_hash=bracket_hash))
-    return render_template('setup.html', form=form)
+    else:
+        if form.errors:
+            flash('All fields required','danger')
+        return render_template('setup.html', form=form)
 
 
 @app.route('/invite/<bracket_hash>')
@@ -233,7 +236,7 @@ def login():
         # check if eid is in user db, add to db if not
         u = User.query.filter_by(user_name=user_name).first() #pylint: disable=invalid-name
         if u is None:
-            flash('User name not found')
+            flash('User name not found','danger')
             return redirect(url_for('login'))
         elif u.check_password(password):
             if u.login_ct is None:
@@ -246,7 +249,7 @@ def login():
             login_user(u)
             return redirect(redirect_dest(url_for('index')))
         else:
-            flash('User name or password incorrect')
+            flash('User name or password incorrect','danger')
             return redirect(redirect_dest(url_for('login')))
 
 
