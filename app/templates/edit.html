@@ -50,7 +50,10 @@ li.game{
     margin-right:5px;
   }
 
-  li.game-top{ border-bottom:1px solid #aaa; }
+  li.game-top{
+    border-bottom:1px solid #aaa;
+    cursor:pointer;
+  }
 
   li.game-spacer{
     border-right:1px solid #aaa;
@@ -59,14 +62,15 @@ li.game{
 
   li.game-bottom{
     border-top:1px solid #aaa;
+    cursor:pointer;
   }
 </style>
 {% if parent_flag %}
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="input-group copyGroup">
       <span class="input-group-addon">Share link</span>
-      <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybracket.com/pool/{{ bracket_hash }}">
+      <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybrackets.pythonanywhere.com/pool/{{ bracket_hash }}">
       <span class="input-group-btn copyButton" id="basic-addon2"><button class="btn btn-default" type="button" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard!"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button></span>
     </div>
   </div>
