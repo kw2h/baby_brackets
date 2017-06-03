@@ -63,6 +63,7 @@ class Bracket(db.Model):
     scoring_bracket_id = Column(Integer, ForeignKey('bracket.id'))
     scoring_bracket = db.relationship('Bracket', backref='pool', remote_side=[id])
     matchups = db.relationship('Matchups', backref='bracket', lazy='dynamic')
+    completed = Column(Boolean)
 
     def __repr__(self):
         return str(self.name)

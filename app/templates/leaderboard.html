@@ -15,11 +15,7 @@
   <tbody>
     {% for bracket in pool %}
     <tr>
-      {% if bracket.user == g.user %}
-        <td><a href ="{{ url_for('edit', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></td>
-      {% else %}
-        <td>{{ bracket.name }}</td>
-      {% endif %}
+      <td><a href ="{{ url_for('edit', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></td>
       <td>{{ bracket.user }}</td>
       <td>{{ bracket.scoreBracket() }}</td>
     </tr>
@@ -38,12 +34,12 @@
 // sort table by descending score
 $( document ).ready(function() {
   function sortTable(){
-    var rows = $('#mytable tbody  tr').get();
+    var rows = $('#mytable tbody tr').get();
 
     rows.sort(function(a, b) {
 
-    var A = $(a).children('td').eq(2).text().toUpperCase();
-    var B = $(b).children('td').eq(2).text().toUpperCase();
+    var A = parseInt($(a).children('td').eq(2).text());
+    var B = parseInt($(b).children('td').eq(2).text());
 
     if(A < B) {
       return 1;

@@ -97,7 +97,7 @@ def create():
     # validate form submission
     if form.validate_on_submit():
         name = request.form['name']
-        b = Bracket(name=name, parent_id=g.user.id)
+        b = Bracket(name=name, parent_id=g.user.id, completed=False)
         db.session.add(b)
         db.session.commit()
         bracket_hash = hashids.encode(b.id)
@@ -201,6 +201,23 @@ def APIedit():
     return jsonify('')
 
 
+@app.route('/complete/<bracket_hash>')
+@login_required
+def complete(bracket_hash):
+    """Route to end pool and mark it complete"""
+    bracket_id = hashids.decode(bracket_hash)[0]
+    b = Bracket.query.filter_by(id=bracket_id).first()
+    matchups = Matchups.query.filter_by(bracket_id=bracket_id).all()
+    for matchup in matchups:
+        if matchup.winner is None:
+            flash('Please complete bracket before ending pool','danger')
+            return redirect(url_for('edit', bracket_hash=bracket_hash))
+    b.completed = True
+    db.session.add(b)
+    db.session.commit()
+    return redirect(url_for('edit', bracket_hash=bracket_hash))
+
+
 @app.route('/leaderboard/<bracket_hash>')
 @login_required
 def leaderboard(bracket_hash):
@@ -208,11 +225,16 @@ def leaderboard(bracket_hash):
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
-    if b.scoring_bracket is None:
-        pool = b.pool
+    if b.completed or b.scoring_bracket.completed:
+        if b.scoring_bracket is None:
+            pool = b.pool
+        else:
+            pool = b.scoring_bracket.pool
+        return render_template('leaderboard.html', pool=pool)
     else:
-        pool = b.scoring_bracket.pool
-    return render_template('leaderboard.html', pool=pool)
+        flash('Pool not completed yet','danger')
+        return redirect(url_for('edit', bracket_hash=bracket_hash))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

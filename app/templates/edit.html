@@ -75,10 +75,22 @@ li.game{
     </div>
   </div>
 </div>
+<div class="row">&nbsp;</div>
+<div id="end-btn" class="row">
+  <div class="col-md-offset-5 col-md-2">
+    <a href="{{ url_for('complete', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End Pool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+  </div>
+</div>
 {% endif %}
+
 <div class="row">
-  <div class="col-md-4">
-    <h3>{{ round1[0].bracket.name }} <a href="{{ url_for('leaderboard', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">Leaderboard</a></h3>
+  <div class="col-md-5">
+    <h3>
+      {{ round1[0].bracket.name }}
+      {% if round1[0].bracket.completed or round1[0].bracket.scoring_bracket.completed %}
+        <a href="{{ url_for('leaderboard', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">Leaderboard</a>
+      {% endif %}
+    </h3>
   </div>
 </div>
 <main id="tournament">
@@ -123,94 +135,109 @@ li.game{
     {% endfor %}
 	</ul>
 </main>
-<script>
-function advanceName(name, nameid, matchid, bracketid) {
-  // logic for 16 team tournament advancement
-  // defines next match to insert winner, id of that match
-  // and whether it is the top (1) or bottom (2) team
-  if (matchid == 1) {
-    nextgame = $('li.game-top[data-matchid=9]');
-    nextid = 9;
-    nextTopOrBottom = 1;
-  } else if (matchid == 5) {
-    nextgame = $('li.game-bottom[data-matchid=9]');
-    nextid = 9;
-    nextTopOrBottom = 2;
-  } else if (matchid == 2) {
-    nextgame = $('li.game-top[data-matchid=10]');
-    nextid = 10;
-    nextTopOrBottom = 1;
-  } else if (matchid == 6) {
-    nextgame = $('li.game-bottom[data-matchid=10]');
-    nextid = 10;
-    nextTopOrBottom = 2;
-  } else if (matchid == 3) {
-    nextgame = $('li.game-top[data-matchid=11]');
-    nextid = 11;
-    nextTopOrBottom = 1;
-  } else if (matchid == 7) {
-    nextgame = $('li.game-bottom[data-matchid=11]');
-    nextid = 11;
-    nextTopOrBottom = 2;
-  } else if (matchid == 4) {
-    nextgame = $('li.game-top[data-matchid=12]');
-    nextid = 12;
-    nextTopOrBottom = 1;
-  } else if (matchid == 8) {
-    nextgame = $('li.game-bottom[data-matchid=12]');
-    nextid = 12;
-    nextTopOrBottom = 2;
-  } else if (matchid == 9) {
-    nextgame = $('li.game-top[data-matchid=13]');
-    nextid = 13;
-    nextTopOrBottom = 1;
-  } else if (matchid == 10) {
-    nextgame = $('li.game-bottom[data-matchid=13]');
-    nextid = 13;
-    nextTopOrBottom = 2;
-  } else if (matchid == 11) {
-    nextgame = $('li.game-top[data-matchid=14]');
-    nextid = 14;
-    nextTopOrBottom = 1;
-  } else if (matchid == 12) {
-    nextgame = $('li.game-bottom[data-matchid=14]');
-    nextid = 14;
-    nextTopOrBottom = 2;
-  } else if (matchid == 13) {
-    nextgame = $('li.game-top[data-matchid=15]');
-    nextid = 15;
-    nextTopOrBottom = 1;
-  } else if (matchid == 14) {
-    nextgame = $('li.game-bottom[data-matchid=15]');
-    nextid = 15;
-    nextTopOrBottom = 2;
-  }
-  // insert winner into next match and update data attributes
-  nextgame.html(name + ' <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>')
-    .data('name', name)
-    .data('nameid', nameid);
-  // AJAX post to api endpoint with data tp update database
-  $.post('/api/edit', { bracket_id: bracketid, match_id: matchid, winner_id: nameid, next_id: nextid, next_Top_Or_Bottom: nextTopOrBottom });
-}
-$( document ).ready(function() {
-  // click event listener for each name in bracket
-  $('li.game.game-top, li.game.game-bottom').click(function() {
-    var name = $(this).data('name');
-    var nameid = $(this).data('nameid');
-    var matchid = $(this).data('matchid');
-    var bracketid = $(this).data('bracketid');
-    advanceName(name, nameid, matchid, bracketid);
-    // remove winner class from other name if present for formatting
-    $('li.game[data-matchid='+matchid+']').removeClass('winner');
-    // add winner class to clicked name to format bold and color
-    $(this).addClass('winner')
-  });
-  // copy share link text to clipboard
-  $('span.copyButton').click(function() {
-    $('#copyTarget').focus().select()
-    document.execCommand("copy");
-  });
-  $('.btn').popover();
-});
-</script>
+{# make sure pool is still open by checking if parent bracket is not complete or if parent, current bracket is not complete #}
+{% if parent_flag or not round1[0].bracket.scoring_bracket.completed %}
+  {% if not round1[0].bracket.completed %}
+    <script>
+    function advanceName(name, nameid, matchid, bracketid) {
+      // logic for 16 team tournament advancement
+      // defines next match to insert winner, id of that match
+      // and whether it is the top (1) or bottom (2) team
+      if (matchid == 1) {
+        nextgame = $('li.game-top[data-matchid=9]');
+        nextid = 9;
+        nextTopOrBottom = 1;
+      } else if (matchid == 5) {
+        nextgame = $('li.game-bottom[data-matchid=9]');
+        nextid = 9;
+        nextTopOrBottom = 2;
+      } else if (matchid == 2) {
+        nextgame = $('li.game-top[data-matchid=10]');
+        nextid = 10;
+        nextTopOrBottom = 1;
+      } else if (matchid == 6) {
+        nextgame = $('li.game-bottom[data-matchid=10]');
+        nextid = 10;
+        nextTopOrBottom = 2;
+      } else if (matchid == 3) {
+        nextgame = $('li.game-top[data-matchid=11]');
+        nextid = 11;
+        nextTopOrBottom = 1;
+      } else if (matchid == 7) {
+        nextgame = $('li.game-bottom[data-matchid=11]');
+        nextid = 11;
+        nextTopOrBottom = 2;
+      } else if (matchid == 4) {
+        nextgame = $('li.game-top[data-matchid=12]');
+        nextid = 12;
+        nextTopOrBottom = 1;
+      } else if (matchid == 8) {
+        nextgame = $('li.game-bottom[data-matchid=12]');
+        nextid = 12;
+        nextTopOrBottom = 2;
+      } else if (matchid == 9) {
+        nextgame = $('li.game-top[data-matchid=13]');
+        nextid = 13;
+        nextTopOrBottom = 1;
+      } else if (matchid == 10) {
+        nextgame = $('li.game-bottom[data-matchid=13]');
+        nextid = 13;
+        nextTopOrBottom = 2;
+      } else if (matchid == 11) {
+        nextgame = $('li.game-top[data-matchid=14]');
+        nextid = 14;
+        nextTopOrBottom = 1;
+      } else if (matchid == 12) {
+        nextgame = $('li.game-bottom[data-matchid=14]');
+        nextid = 14;
+        nextTopOrBottom = 2;
+      } else if (matchid == 13) {
+        nextgame = $('li.game-top[data-matchid=15]');
+        nextid = 15;
+        nextTopOrBottom = 1;
+      } else if (matchid == 14) {
+        nextgame = $('li.game-bottom[data-matchid=15]');
+        nextid = 15;
+        nextTopOrBottom = 2;
+      } else if (matchid == 15) {
+        $('#end-btn').show();
+      }
+      // insert winner into next match and update data attributes
+      nextgame.html(name + ' <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>')
+        .data('name', name)
+        .data('nameid', nameid);
+      // AJAX post to api endpoint with data tp update database
+      $.post('/api/edit', { bracket_id: bracketid, match_id: matchid, winner_id: nameid, next_id: nextid, next_Top_Or_Bottom: nextTopOrBottom });
+    }
+    $( document ).ready(function() {
+      // hide end pool button unless completed
+      {% if round4[0].winner is none %}
+      $('#end-btn').hide();
+      {% endif %}
+      // click event listener for each name in bracket
+      $('li.game.game-top, li.game.game-bottom').click(function() {
+        var name = $(this).data('name');
+        var nameid = $(this).data('nameid');
+        var matchid = $(this).data('matchid');
+        var bracketid = $(this).data('bracketid');
+        advanceName(name, nameid, matchid, bracketid);
+        // remove winner class from other name if present for formatting
+        $('li.game[data-matchid='+matchid+']').removeClass('winner');
+        // add winner class to clicked name to format bold and color
+        $(this).addClass('winner')
+      });
+      // copy share link text to clipboard
+      $('span.copyButton').click(function() {
+        $('#copyTarget').focus().select()
+        document.execCommand("copy");
+      });
+      $('.btn').popover();
+    });
+    </script>
+  {% else %}
+    <script>
+      $('#end-btn').hide();
+    </script>
+  {% endif %}
+{% endif %}
 {% endblock %}
