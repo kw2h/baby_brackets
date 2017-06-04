@@ -26,7 +26,7 @@
 {% if pool[0] %}
   {% if pool[0].parent == g.user %}
   <div class="col-md-3">
-    <a href="{{ url_for('edit', bracket_hash=bracket_hash) }}" class="btn btn-primary" role="button">Back to {{pool[0].scoring_bracket.name}}</a>
+    <a href="{{ url_for('edit', bracket_hash=hashidEncode(pool[0].scoring_bracket.id)) }}" class="btn btn-primary" role="button">Back to {{pool[0].scoring_bracket.name}}</a>
   </div>
   {% endif %}
 {% endif %}
