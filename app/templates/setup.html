@@ -4,6 +4,8 @@
 {% set active_page = "create" %}
 {% block content %}
 {% include 'flash.html' %}
+<link href="/static/css/selectize.bootstrap3.css" rel="stylesheet">
+<script src="/static/js/selectize.js"></script>
   <div class="col-md-12">
     <form class="form" action="" method="post" name="post">
       {{ form.hidden_tag() }}
@@ -23,7 +25,7 @@
               <p>{{ form.name5(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
               <p>{{ form.name9(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
               <p>{{ form.name13(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
-              <p>{{ form.name17(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <!-- <p>{{ form.name17(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
               <p>{{ form.name21(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
               <p>{{ form.name25(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
               <p>{{ form.name29(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
@@ -34,7 +36,7 @@
               <p>{{ form.name49(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
               <p>{{ form.name53(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
               <p>{{ form.name57(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
-              <p>{{ form.name61(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+              <p>{{ form.name61(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p> -->
             </div>
           </div>
         </div>
@@ -48,7 +50,7 @@
               <p>{{ form.name6(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
               <p>{{ form.name10(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
               <p>{{ form.name14(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
-              <p>{{ form.name18(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <!-- <p>{{ form.name18(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
               <p>{{ form.name22(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
               <p>{{ form.name26(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
               <p>{{ form.name30(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
@@ -59,8 +61,7 @@
               <p>{{ form.name50(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
               <p>{{ form.name54(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
               <p>{{ form.name58(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
-              <p>{{ form.name62(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
-
+              <p>{{ form.name62(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p> -->
             </div>
           </div>
         </div>
@@ -74,7 +75,7 @@
               <p>{{ form.name7(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
               <p>{{ form.name11(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
               <p>{{ form.name15(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
-              <p>{{ form.name19(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <!-- <p>{{ form.name19(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
               <p>{{ form.name23(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
               <p>{{ form.name27(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
               <p>{{ form.name31(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
@@ -85,8 +86,7 @@
               <p>{{ form.name51(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
               <p>{{ form.name55(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
               <p>{{ form.name59(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
-              <p>{{ form.name63(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
-
+              <p>{{ form.name63(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p> -->
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
               <p>{{ form.name8(size=30, maxlength=140, class='form-control', placeholder='2 Seed') }}</p>
               <p>{{ form.name12(size=30, maxlength=140, class='form-control', placeholder='3 Seed') }}</p>
               <p>{{ form.name16(size=30, maxlength=140, class='form-control', placeholder='4 Seed') }}</p>
-              <p>{{ form.name20(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
+              <!-- <p>{{ form.name20(size=30, maxlength=140, class='form-control hide16', placeholder='5 Seed') }}</p>
               <p>{{ form.name24(size=30, maxlength=140, class='form-control hide16', placeholder='6 Seed') }}</p>
               <p>{{ form.name28(size=30, maxlength=140, class='form-control hide16', placeholder='7 Seed') }}</p>
               <p>{{ form.name32(size=30, maxlength=140, class='form-control hide16', placeholder='8 Seed') }}</p>
@@ -111,7 +111,7 @@
               <p>{{ form.name52(size=30, maxlength=140, class='form-control hide32', placeholder='13 Seed') }}</p>
               <p>{{ form.name56(size=30, maxlength=140, class='form-control hide32', placeholder='14 Seed') }}</p>
               <p>{{ form.name60(size=30, maxlength=140, class='form-control hide32', placeholder='15 Seed') }}</p>
-              <p>{{ form.name64(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p>
+              <p>{{ form.name64(size=30, maxlength=140, class='form-control hide32', placeholder='16 Seed') }}</p> -->
             </div>
           </div>
         </div>
@@ -150,7 +150,28 @@ $(document).ready(function() {
     }
   }
 
-
+  $('input[id^=name]').selectize({
+      valueField: 'name',
+      labelField: 'name',
+      searchField: 'name',
+      maxItems: 1,
+      options: [],
+      create: true,
+      load: function(query, callback) {
+          if (!query.length) return callback();
+          $.ajax({
+              url: '/api/search/' + encodeURIComponent(query),
+              type: 'GET',
+              dataType: 'json',
+              error: function() {
+                  callback();
+              },
+              success: function(res) {
+                  callback(res);
+              }
+          });
+      }
+  });
 
 });
 </script>

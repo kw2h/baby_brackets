@@ -8,6 +8,7 @@ from .models import *
 from .forms import *
 from .bracket import parentBracketMaker, userBracketMaker
 from .admin import AdminModelView
+from .ssaData import prefix_search
 
 admin.add_link(MenuLink(name='Back to Baby Brackets', url='/'))
 admin.add_view(AdminModelView(User, db.session))
@@ -128,6 +129,14 @@ def setup(bracket_hash):
         if form.errors:
             flash('All fields required','danger')
         return render_template('setup.html', form=form)
+
+
+@app.route('/api/search/<query>')
+@login_required
+def APIsearch(query):
+    """API Route to search names"""
+    q = prefix_search(query)
+    return json.dumps(q)
 
 
 @app.route('/invite/<bracket_hash>')
