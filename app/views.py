@@ -230,10 +230,34 @@ def leaderboard(bracket_hash):
             pool = b.pool
         else:
             pool = b.scoring_bracket.pool
-        return render_template('leaderboard.html', pool=pool)
+        return render_template('leaderboard.html', pool=pool, bracket_hash=bracket_hash)
     else:
         flash('Pool not completed yet','danger')
         return redirect(url_for('edit', bracket_hash=bracket_hash))
+
+
+@app.route('/view/<bracket_hash>')
+@login_required
+def view(bracket_hash):
+    """Route to view Bracket Page"""
+    bracket_id = hashids.decode(bracket_hash)[0]
+
+    b = Bracket.query.filter_by(id=bracket_id).first()
+    if b.completed or b.scoring_bracket.completed:
+        round1 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=1)\
+                 .order_by(Matchups.region).all()
+        round2 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=2)\
+                 .order_by(Matchups.region).all()
+        round3 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=3)\
+                 .order_by(Matchups.region).all()
+        round4 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=4)\
+                 .order_by(Matchups.region).all()
+        return render_template('view.html', round1=round1, round2=round2,
+                               round3=round3, round4=round4,
+                               bracket_hash=bracket_hash)
+    else:
+        flash('Pool not completed yet','danger')
+        return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
