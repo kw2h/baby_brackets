@@ -55,6 +55,10 @@
 .navbar-default .navbar-toggle .icon-bar {
   background-color: #337ab7;
 }
+.navbar-default .navbar-toggle:hover .icon-bar,
+.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #ffffff;
+}
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
   border-color: #337ab7;
