@@ -10,10 +10,20 @@
     <form class="form" action="" method="post" name="post">
       {{ form.hidden_tag() }}
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 col-xs-6">
           {{ wtf.form_field(form.size, class_="form-control") }}
         </div>
+        <div class="col-md-2 col-xs-6">
+          {{ wtf.form_field(form.sex, class_="form-control") }}
+        </div>
+        <div class="col-md-1 pull-right">
+          <button id="expand-all" type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All</button>
+        </div>
+        <div class="col-md-2 pull-right">
+          <button type="button" class="btn btn-primary random-name">Randomly Fill</button>
+        </div>
       </div>
+      <div class="row">&nbsp;</div>
       <div class="row">
         <div class="col-md-3">
           <div class="panel panel-default">
@@ -123,9 +133,41 @@
 $(document).ready(function() {
   // change icon from plus to minus on click
   $('.collapse').on('shown.bs.collapse', function(){
-  $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
   }).on('hidden.bs.collapse', function(){
-  $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+  });
+
+  //expand all button
+  $('#expand-all').on('click', function () {
+    $('[id^=collapse]').collapse('show');
+  });
+
+  // ajax load random names
+  $('.random-name').on('click', function () {
+    var blanks = $('input[id^=name]').filter( function() {
+      return !this.value
+    })
+    var data = {
+      n : blanks.length,
+      sex : $('select[id=sex]').val()
+    }
+    $.ajax({
+      url: "/api/randomname",
+      type: "POST",
+      dataType: "json",
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=utf-8',
+      success: function(data) {
+        $.each(data, function(i, val) {
+          console.log(val.name);
+          var $select = blanks.eq(i).selectize();
+          var selectize = $select[0].selectize;
+          selectize.addOption({name: val.name});
+          selectize.setValue(val.name);
+        });
+      }
+    });
   });
 
   // only show first 16 name inputs by default
@@ -161,8 +203,10 @@ $(document).ready(function() {
           if (!query.length) return callback();
           $.ajax({
               url: '/api/search/' + encodeURIComponent(query),
-              type: 'GET',
+              type: 'POST',
               dataType: 'json',
+              data: JSON.stringify( {sex : $('select[id=sex]').val()} ),
+              contentType: 'application/json; charset=utf-8',
               error: function() {
                   callback();
               },
