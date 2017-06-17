@@ -49,8 +49,7 @@ class EditForm(Form):
                                ],
                        validators=[DataRequired()])
     sex = SelectField('Sex',
-                       choices=[('',"It's a Surprise!"), ('M', 'M'), ('F', 'F'),],
-                       validators=[DataRequired()])
+                       choices=[('',"It's a Surprise!"), ('M', 'M'), ('F', 'F'),])
     name1 = StringField('', validators=[DataRequired()])
     name2 = StringField('', validators=[DataRequired()])
     name3 = StringField('', validators=[DataRequired()])
