@@ -38,6 +38,13 @@
                 ><a href="{{ url_for('index') }}">Home</a>
               {% endif %}
               </li>
+              <li role="presentation"
+              {% if active_page == 'howto' %}
+                class="active" ><a href="#">How It Works</a>
+              {% else %}
+                ><a href="{{ url_for('howto') }}">How It Works</a>
+              {% endif %}
+              </li>
               {% if g.user.is_authenticated %}
                 <li role="presentation"
                 {% if active_page == 'create' %}

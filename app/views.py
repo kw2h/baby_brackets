@@ -50,6 +50,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/howto')
+def howto():
+    return render_template('howto.html')
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Route for Register Page"""
@@ -181,19 +186,23 @@ def edit(bracket_hash):
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
-    parent_flag = b.parent == g.user
+    if b.completed or b.scoring_bracket.completed:
+        return redirect(url_for('view', bracket_hash=bracket_hash))
+    else:
+        parent_flag = b.parent == g.user
 
-    round1 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=1)\
-             .order_by(Matchups.region).all()
-    round2 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=2)\
-             .order_by(Matchups.region).all()
-    round3 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=3)\
-             .order_by(Matchups.region).all()
-    round4 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=4)\
-             .order_by(Matchups.region).all()
-    return render_template('edit.html', round1=round1, round2=round2,
-                           round3=round3, round4=round4,
-                           bracket_hash=bracket_hash, parent_flag=parent_flag)
+        round1 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=1)\
+                 .order_by(Matchups.region).all()
+        round2 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=2)\
+                 .order_by(Matchups.region).all()
+        round3 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=3)\
+                 .order_by(Matchups.region).all()
+        round4 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=4)\
+                 .order_by(Matchups.region).all()
+        return render_template('edit.html', round1=round1, round2=round2,
+                               round3=round3, round4=round4,
+                               bracket_hash=bracket_hash, parent_flag=parent_flag)
+
 
 
 @app.route('/api/edit', methods=['POST'])

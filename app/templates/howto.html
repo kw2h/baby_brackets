@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% set active_page = "howto" %}
+{% block content %}
+  {% include 'flash.html' %}
+  <div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#parent" aria-controls="parent" role="tab" data-toggle="tab">Parent</a></li>
+      <li role="presentation"><a href="#fnf" aria-controls="fnf" role="tab" data-toggle="tab">Family or Friend</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="parent">
+        <ul class="list-group">
+          <li class="list-group-item">Create a Bracket</li>
+          <li class="list-group-item">Name it</li>
+          <li class="list-group-item">Pick your names</li>
+          <li class="list-group-item">Share it to start your pool</li>
+          <li class="list-group-item">Pick your Baby's name</li>
+        </ul>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="fnf">
+        <ul class="list-group">
+          <li class="list-group-item">Get a link from the lucky parents</li>
+          <li class="list-group-item">Pick a name for each head-to-head name matchup</li>
+          <li class="list-group-item">Wait for the parent's to decide on a name</li>
+          <li class="list-group-item">Check the leaderboard and see how you did</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
