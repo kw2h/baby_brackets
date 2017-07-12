@@ -186,7 +186,8 @@ def edit(bracket_hash):
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
-    if b.completed or b.scoring_bracket.completed:
+
+    if b.isCompleted():
         return redirect(url_for('view', bracket_hash=bracket_hash))
     else:
         parent_flag = b.parent == g.user
@@ -216,13 +217,14 @@ def APIedit():
     next_Top_Or_Bottom = int(request.form['next_Top_Or_Bottom'])
     m = Matchups.query.filter_by(bracket_id=bracket_id).filter_by(match_id=match_id).first()
     m.winner_id = winner_id
-    n = Matchups.query.filter_by(bracket_id=bracket_id).filter_by(match_id=next_id).first()
-    if next_Top_Or_Bottom == 1:
-        n.name1_id = winner_id
-    else:
-        n.name2_id = winner_id
     db.session.add(m)
-    db.session.add(n)
+    if next_id != 0:
+        n = Matchups.query.filter_by(bracket_id=bracket_id).filter_by(match_id=next_id).first()
+        if next_Top_Or_Bottom == 1:
+            n.name1_id = winner_id
+        else:
+            n.name2_id = winner_id
+        db.session.add(n)
     db.session.commit()
     return jsonify('')
 
@@ -269,7 +271,7 @@ def view(bracket_hash):
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
-    if b.completed or b.scoring_bracket.completed:
+    if b.isCompleted():
         round1 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=1)\
                  .order_by(Matchups.region).all()
         round2 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=2)\

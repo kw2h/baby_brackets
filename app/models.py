@@ -68,6 +68,13 @@ class Bracket(db.Model):
     def __repr__(self):
         return str(self.name)
 
+    def isCompleted(self):
+        try:
+            flag = self.scoring_bracket.completed
+        except:
+            flag = False
+        return self.completed or flag
+
     def scoreBracket(self):
         ''' Compare user's winner pick with scoring_match winner for all related
             matchups; if the same, then add to score based on rnd

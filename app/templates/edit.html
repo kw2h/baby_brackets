@@ -134,6 +134,9 @@ li.game{
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
+	<ul class="round">
+    <li class="game champ winner">{{ round4[0].winner|default('', true) }}</li>
+	</ul>
 </main>
 {# make sure pool is still open by checking if parent bracket is not complete or if parent, current bracket is not complete #}
 {% if parent_flag or not round1[0].bracket.scoring_bracket.completed %}
@@ -200,6 +203,9 @@ li.game{
         nextid = 15;
         nextTopOrBottom = 2;
       } else if (matchid == 15) {
+        nextgame = $('li.champ');
+        nextid = 0;
+        nextTopOrBottom = 0;
         $('#end-btn').show();
       }
       // insert winner into next match and update data attributes
