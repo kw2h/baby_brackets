@@ -66,16 +66,6 @@ li.game{
   }
 </style>
 {% if parent_flag %}
-<div class="row">
-  <div class="col-md-5">
-    <div class="input-group copyGroup">
-      <span class="input-group-addon">Share link</span>
-      <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybrackets.pythonanywhere.com/pool/{{ bracket_hash }}">
-      <span class="input-group-btn copyButton" id="basic-addon2"><button class="btn btn-default" type="button" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard!"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button></span>
-    </div>
-  </div>
-</div>
-<div class="row">&nbsp;</div>
 <div id="end-btn" class="row">
   <div class="col-md-offset-5 col-md-2">
     <a href="{{ url_for('complete', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End Pool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
@@ -138,6 +128,16 @@ li.game{
     <li class="game champ winner">{{ round4[0].winner|default('', true) }}</li>
 	</ul>
 </main>
+<div class="row">
+  <div class="col-md-5">
+    <div class="input-group copyGroup">
+      <span class="input-group-addon">Share link</span>
+      <input type="text" class="form-control" aria-describedby="basic-addon2" id="copyTarget" value="http://babybrackets.pythonanywhere.com/pool/{{ bracket_hash }}">
+      <span class="input-group-btn copyButton" id="basic-addon2"><button class="btn btn-default" type="button" data-container="body" data-toggle="popover" data-placement="right" data-content="Link copied to clipboard!"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span></button></span>
+    </div>
+  </div>
+</div>
+<div class="row">&nbsp;</div>
 {# make sure pool is still open by checking if parent bracket is not complete or if parent, current bracket is not complete #}
 {% if parent_flag or not round1[0].bracket.scoring_bracket.completed %}
   {% if not round1[0].bracket.completed %}

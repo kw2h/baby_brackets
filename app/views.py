@@ -200,9 +200,14 @@ def edit(bracket_hash):
                  .order_by(Matchups.region).all()
         round4 = Matchups.query.filter_by(bracket_id=bracket_id,rnd=4)\
                  .order_by(Matchups.region).all()
-        return render_template('edit.html', round1=round1, round2=round2,
-                               round3=round3, round4=round4,
-                               bracket_hash=bracket_hash, parent_flag=parent_flag)
+
+        if len(round1) == 0:
+            return redirect(url_for('setup', bracket_hash=bracket_hash))
+        else:
+            flash('Click on a name to advance it to the next round','info')
+            return render_template('edit.html', round1=round1, round2=round2,
+                                   round3=round3, round4=round4,
+                                   bracket_hash=bracket_hash, parent_flag=parent_flag)
 
 
 

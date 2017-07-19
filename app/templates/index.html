@@ -10,6 +10,7 @@
       background-size: cover;
       background-repeat: no-repeat;
       color: white;
+      height: auto;
       /*text-shadow: black 0.3em 0.3em 0.3em;*/
   }
   </style>
@@ -39,14 +40,51 @@
     {% else %}
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <h1>Baby Name Tournament Brackets</h1>
-      <p>Let your friends and family follow the action as the lucky
-        parents-to-be decide the name of the newest addition to their
-        family...NCAA Tournament style.</p>
-      <p>
-        <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Sign up now!</a>
-      </p>
+      <div class="row">
+        <div class="col-md-6">
+          <h1>Baby Brackets</h1>
+          <p>Let your friends and family compete to see who can guess what the
+            lucky parents-to-be name the newest addition to their family...
+            NCAA Tournament style.</p>
+          <p>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Sign up now!</a>
+          </p>
+        </div>
+      </div>
     </div>
     {% endif %}
+    <div class="row">&nbsp;</div>
+    <!-- <div class="row">
+      <div class="col-md-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Parents</h3>
+          </div>
+          <div class="panel-body">
+            Panel content
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Family & Friends</h3>
+          </div>
+          <div class="panel-body">
+            Panel content
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Results</h3>
+          </div>
+          <div class="panel-body">
+            Panel content
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
 {% endblock %}
