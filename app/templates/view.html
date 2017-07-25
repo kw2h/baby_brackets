@@ -45,10 +45,10 @@ li.game{
     font-weight:bold;
     color: #337ab7;
   }
-  li.game span{
+  /*li.game span{
     float:right;
     margin-right:5px;
-  }
+  }*/
 
   li.game-top{
     border-bottom:1px solid #aaa;
@@ -75,45 +75,45 @@ li.game{
 	<ul class="round round-1">
 		<li class="spacer">&nbsp;</li>
     {% for match in round1 %}
-      <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}>{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+      <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
   		<li class="game game-spacer">&nbsp;</li>
 
-      <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}>{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+      <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
   		<li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-2">
     <li class="spacer">&nbsp;</li>
     {% for match in round2 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}>{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}>{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-3">
     <li class="spacer">&nbsp;</li>
     {% for match in round3 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}>{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}>{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-4">
     <li class="spacer">&nbsp;</li>
     {% for match in round4 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}>{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name1 != match.scoring_match.name1 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}>{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" {% if match.scoring_match is not none and match.name2 != match.scoring_match.name2 %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round">
-    <li class="game champ winner" {% if round4[0].scoring_match is not none and round4[0].winner != round4[0].scoring_match.winner %}style="text-decoration: line-through;"{% endif %}>{{ round4[0].winner|default('', true) }}</li>
+    <li class="game champ winner" {% if round4[0].scoring_match is not none and round4[0].winner != round4[0].scoring_match.winner %}style="text-decoration: line-through;"{% endif %}><span class="badge">{{ round4[0].winner.seed|default('', true) }}</span> {{ round4[0].winner|default('', true) }}</li>
 	</ul>
 </main>
 {% endblock %}
