@@ -32,11 +32,11 @@ def prefix_search(query, sex):
                    .reset_index()
                    .sort_values('count', ascending=False))
     df = df[df.sex == sex] if sex else df
-    q = df[df.name.str.startswith(query)]
+    q = df[df.name.str.contains(query, False)]
     return q[:10].to_dict('records')
 
 def random_name(n, sex):
     df = names_all.groupby(['name','sex'])['count'].sum().reset_index()
-    df = df[df['count'] > 1000.0]
+    df = df[df['count'] > 100000.0]
     q = df[df.sex == sex] if sex else df
     return q.sample(n).to_dict('records')
