@@ -45,10 +45,10 @@ li.game{
     font-weight:bold;
     color: #337ab7;
   }
-  li.game span{
+  /*li.game span{
     float:right;
     margin-right:5px;
-  }
+  }*/
 
   li.game-top{
     border-bottom:1px solid #aaa;
@@ -87,45 +87,45 @@ li.game{
 	<ul class="round round-1">
 		<li class="spacer">&nbsp;</li>
     {% for match in round1 %}
-      <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}">{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+      <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}" data-seed="{{match.name1.seed}}"><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
   		<li class="game game-spacer">&nbsp;</li>
 
-      <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}">{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+      <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}" data-seed="{{match.name2.seed}}"><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
   		<li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-2">
     <li class="spacer">&nbsp;</li>
     {% for match in round2 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}">{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}" data-seed="{{match.name1.seed}}"><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}">{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}" data-seed="{{match.name2.seed}}"><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-3">
     <li class="spacer">&nbsp;</li>
     {% for match in round3 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}">{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}" data-seed="{{match.name1.seed}}"><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}">{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}" data-seed="{{match.name2.seed}}"><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round round-4">
     <li class="spacer">&nbsp;</li>
     {% for match in round4 %}
-    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}">{{ match.name1|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-top {% if match.winner == match.name1|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name1_id}}" data-name="{{match.name1}}" data-seed="{{match.name1.seed}}"><span class="badge">{{ match.name1.seed|default('', true) }}</span> {{ match.name1|default('', true) }}</li>
     <li class="game game-spacer">&nbsp;</li>
 
-    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}">{{ match.name2|default('', true) }} <span class="glyphicon glyphicon-heart" aria-hidden="true"></span></li>
+    <li class="game game-bottom {% if match.winner == match.name2|default('', true) %}winner{% endif %}" data-bracketid="{{match.bracket_id}}" data-matchid="{{match.match_id}}" data-nameid="{{match.name2_id}}" data-name="{{match.name2}}" data-seed="{{match.name2.seed}}"><span class="badge">{{ match.name2.seed|default('', true) }}</span> {{ match.name2|default('', true) }}</li>
     <li class="spacer">&nbsp;</li>
     {% endfor %}
 	</ul>
 	<ul class="round">
-    <li class="game champ winner">{{ round4[0].winner|default('', true) }}</li>
+    <li class="game champ winner"><span class="badge">{{ round4[0].winner.seed|default('', true) }}</span> {{ round4[0].winner|default('', true) }}</li>
 	</ul>
 </main>
 <div class="row">
@@ -142,7 +142,7 @@ li.game{
 {% if parent_flag or not round1[0].bracket.scoring_bracket.completed %}
   {% if not round1[0].bracket.completed %}
     <script>
-    function advanceName(name, nameid, matchid, bracketid) {
+    function advanceName(name, seed, nameid, matchid, bracketid) {
       // logic for 16 team tournament advancement
       // defines next match to insert winner, id of that match
       // and whether it is the top (1) or bottom (2) team
@@ -209,7 +209,7 @@ li.game{
         $('#end-btn').show();
       }
       // insert winner into next match and update data attributes
-      nextgame.html(name + ' <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>')
+      nextgame.html('<span class="badge">' + seed + '</span> ' + name)
         .data('name', name)
         .data('nameid', nameid);
       // AJAX post to api endpoint with data tp update database
@@ -223,10 +223,11 @@ li.game{
       // click event listener for each name in bracket
       $('li.game.game-top, li.game.game-bottom').click(function() {
         var name = $(this).data('name');
+        var seed = $(this).data('seed');
         var nameid = $(this).data('nameid');
         var matchid = $(this).data('matchid');
         var bracketid = $(this).data('bracketid');
-        advanceName(name, nameid, matchid, bracketid);
+        advanceName(name, seed, nameid, matchid, bracketid);
         // remove winner class from other name if present for formatting
         $('li.game[data-matchid='+matchid+']').removeClass('winner');
         // add winner class to clicked name to format bold and color
