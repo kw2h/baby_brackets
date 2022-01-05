@@ -77,9 +77,7 @@ li.game{
   <div class="col-md-5">
     <h3>
       {{ round1[0].bracket.name }}
-      {% if round1[0].bracket.completed or round1[0].bracket.scoring_bracket.completed %}
-        <a href="{{ url_for('leaderboard', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">Leaderboard</a>
-      {% endif %}
+      <a href="{{ url_for('leaderboard', bracket_hash=hashidEncode(round1[0].bracket.id)) }}" class="btn btn-primary" role="button">Leaderboard</a>
     </h3>
   </div>
 </div>
