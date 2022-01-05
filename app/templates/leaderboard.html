@@ -15,7 +15,11 @@
   <tbody>
     {% for bracket in pool %}
     <tr>
-      <td><a href ="{{ url_for('view', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></td>
+      {% if bracket.scoring_bracket.completed %}
+        <td><a href ="{{ url_for('view', bracket_hash=hashidEncode(bracket.id)) }}">{{ bracket.name }}</a></td>
+      {% else %}
+        <td>{{ bracket.name }}</td>
+      {% endif %}
       <td>{{ bracket.user }}</td>
       <td>{{ bracket.scoreBracket() }}</td>
     </tr>
