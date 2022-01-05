@@ -81,8 +81,6 @@ def register():
         db.session.commit()
         login_user(u)
         flash('Thank you for signing up!','success')
-        print form.referral.data
-        print form.referral.data != ''
         if form.referral.data is not None and form.referral.data != '':
             return redirect(url_for('pool', refer_bracket_hash=form.referral.data))
         else:
@@ -258,15 +256,11 @@ def leaderboard(bracket_hash):
     bracket_id = hashids.decode(bracket_hash)[0]
 
     b = Bracket.query.filter_by(id=bracket_id).first()
-    if b.completed or b.scoring_bracket.completed:
-        if b.scoring_bracket is None:
-            pool = b.pool
-        else:
-            pool = b.scoring_bracket.pool
-        return render_template('leaderboard.html', pool=pool, bracket_hash=bracket_hash)
+    if b.scoring_bracket is None:
+        pool = b.pool
     else:
-        flash('Pool not completed yet','danger')
-        return redirect(url_for('edit', bracket_hash=bracket_hash))
+        pool = b.scoring_bracket.pool
+    return render_template('leaderboard.html', pool=pool, bracket_hash=bracket_hash)
 
 
 @app.route('/view/<bracket_hash>')
