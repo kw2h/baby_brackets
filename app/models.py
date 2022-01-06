@@ -75,6 +75,13 @@ class Bracket(db.Model):
             flag = False
         return self.completed or flag
 
+    def isLocked(self):
+        try:
+            flag = self.scoring_bracket.matchups[0].winner is not None
+        except:
+            flag = False
+        return self.completed or flag
+
     def scoreBracket(self):
         ''' Compare user's winner pick with scoring_match winner for all related
             matchups; if the same, then add to score based on rnd

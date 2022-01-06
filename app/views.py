@@ -185,7 +185,7 @@ def edit(bracket_hash):
 
     b = Bracket.query.filter_by(id=bracket_id).first()
 
-    if b.isCompleted():
+    if b.isCompleted() or b.isLocked():
         return redirect(url_for('view', bracket_hash=bracket_hash))
     else:
         parent_flag = b.parent == g.user
