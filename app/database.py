@@ -1,14 +1,20 @@
-from sqlmodel import SQLModel, create_engine
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app import settings
 
 
-_sqlite_file_name = "database.db"
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{_sqlite_file_name}"
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
-
-connect_args = {"check_same_thread": False}
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, connect_args=connect_args)  # only needed for SQLite
-# engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+async_engine = create_async_engine(
+   settings.db_async_connection_str,
+   echo=True,
+   future=True
+)
 
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+async def get_async_session() -> AsyncSession:  # type: ignore
+   async_session = sessionmaker(
+       bind=async_engine, class_=AsyncSession, expire_on_commit=False
+   )
+   async with async_session() as session:
+       yield session
