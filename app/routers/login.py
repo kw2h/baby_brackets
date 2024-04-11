@@ -6,9 +6,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Annotated, Any, Dict
 
 from app import templates, forms, settings
-from app.auth import get_user, authenticate_user, create_access_token
+from app.auth import authenticate_user, create_access_token, get_session_from_token
 from app.database import get_async_session
-from app.models import Token
+from app.models import Token, SessionToken
 
 
 # --------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ router = APIRouter()
 # --------------------------------------------------------------------------------
 # Routes
 # --------------------------------------------------------------------------------
-@router.post("/token_bearer")
+@router.post("/token_bearer", tags=["Auth"])
 async def login_for_bearer_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: AsyncSession = Depends(get_async_session)
@@ -40,7 +40,7 @@ async def login_for_bearer_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@router.post("/token_cookie")
+@router.post("/token_cookie", tags=["Auth"])
 async def login_for_cookie_access_token(
     response: Response, 
     form_data: OAuth2PasswordRequestForm = Depends(),
@@ -49,8 +49,16 @@ async def login_for_cookie_access_token(
     user = await authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
-    access_token = create_access_token(data={"username": user.username})
-    
+    session_token: SessionToken = SessionToken(username=user.username)
+    db.add(session_token)
+    await db.commit()
+    await db.refresh(session_token)
+    access_token = create_access_token(
+        data={
+            "session_id": session_token.session_id,
+            "username": session_token.username
+        }
+    )
     response.set_cookie(
         key=settings.cookie_name, 
         value=f"Bearer {access_token}", 
@@ -59,7 +67,7 @@ async def login_for_cookie_access_token(
     return {settings.cookie_name: access_token, "token_type": "bearer"}
 
 
-@router.get("/login", tags=["Pages"])
+@router.get("/auth/login", tags=["Auth"])
 async def get_login(request: Request) -> Any:
     form = forms.LoginForm(request)
     return templates.TemplateResponse(
@@ -72,18 +80,13 @@ async def get_login(request: Request) -> Any:
     )
 
 
-@router.post("/login", tags=["Pages"])
+@router.post("/auth/login", tags=["Auth"])
 async def post_login(
     request: Request,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: AsyncSession = Depends(get_async_session)
 ):
     form = forms.LoginForm(request)
-    # user = await get_user(username=form_data.username, db=db)
-    # user = await authenticate_user(form_data.username, form_data.password, db)
-    # if not user:
-    #     return RedirectResponse("/login", status.HTTP_302_FOUND)
-
     response = RedirectResponse("/index", status.HTTP_302_FOUND)
     try:
         await login_for_cookie_access_token(response=response, form_data=form_data, db=db)
@@ -98,4 +101,15 @@ async def post_login(
         )
 
     return response
-    
+
+
+@router.get("/auth/logout", tags=["Auth"], response_class=HTMLResponse)
+async def logout(
+    session_token: SessionToken = Depends(get_session_from_token),
+    db: AsyncSession = Depends(get_async_session)
+):  
+    response = RedirectResponse("/index", status.HTTP_302_FOUND)
+    response.delete_cookie(settings.cookie_name)
+    await db.delete(session_token)
+    await db.commit()
+    return response

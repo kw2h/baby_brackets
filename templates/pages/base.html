@@ -4,7 +4,7 @@
     <title>Baby Brackets</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/static/css/navbar.css" rel="stylesheet">
-    <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/static/favicon.ico">
@@ -35,7 +35,7 @@
               {% if active_page == 'index' %}
                 class="active" ><a href="#">Home</a>
               {% else %}
-                ><a href="{{ url_for('index') }}">Home</a>
+                ><a href="/index">Home</a>
               {% endif %}
               </li>
               <li role="presentation"
@@ -45,13 +45,13 @@
                 ><a href="{# url_for('howto') #}">How It Works</a>
               {% endif %}
               </li>
-              {# {% if g.user.is_authenticated %} #}
+              {% if session_token %}
                 <li role="presentation"
-                {% if active_page == 'create' %}
+                  {% if active_page == 'create' %}
                   class="active" ><a href="#">Create</a>
-                  {# {% else %} #}
+                  {% else %}
                   ><a href="{# url_for('create') #}">Create</a>
-                  {# {% endif %} #}
+                  {% endif %}
                 </li>
                 <li role="presentation" class="dropdown {% if active_page == 'edit' and parent_flag %}active{% endif %}">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -74,7 +74,7 @@
                   </ul>
                 </li>
                 <li role="presentation">
-                  <a href="{# url_for('logout') #}">Logout</a>
+                  <a href="{{ url_for('logout') }}">Logout</a>
                 </li>
               {% else %}
                 <li role="presentation"
@@ -86,9 +86,9 @@
                 {% endif %}
                 <li role="presentation"
                 {% if active_page == 'login' %}
-                  class="active" ><a href="/login">Login</a>
+                  class="active" ><a href="{{ url_for('get_login') }}">Login</a>
                 {% else %}
-                  ><a href="/login">Login</a>
+                  ><a href="{{ url_for('get_login') }}">Login</a>
                 </li>
                 {% endif %}
               {% endif %}

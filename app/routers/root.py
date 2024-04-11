@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request, Depends
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app import templates, settings
-from app.auth import  get_current_user_from_cookie
-from app.models import User
+from app import templates
+from app.database import get_async_session
+from app.auth import  get_session_token_from_cookie
 
 # --------------------------------------------------------------------------------
 # Router
@@ -16,16 +17,15 @@ router = APIRouter()
 # --------------------------------------------------------------------------------
 
 @router.get("/index", tags=["Pages"])
-async def index(request: Request):
+async def index(request: Request, db: AsyncSession = Depends(get_async_session)):
     try:
-        user = await get_current_user_from_cookie(request)
+        session_token = await get_session_token_from_cookie(request, db)
     except:
-        user = None
-    print(request.cookies.get(settings.cookie_name))
+        session_token = None
     return templates.TemplateResponse(
         "pages/index.html",
         context={
             "request": request,
-            "user": user
+            "session_token": session_token
         }
     )

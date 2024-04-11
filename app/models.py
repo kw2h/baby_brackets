@@ -1,5 +1,6 @@
 import datetime
 from pydantic import BaseModel
+from secrets import token_urlsafe
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlmodel import Field, Relationship, SQLModel
 from typing import Optional
@@ -28,6 +29,16 @@ class UUIDModel(SQLModel):
         index=True,
         nullable=False,
     )
+
+
+class SessionToken(SQLModel, table=True):
+    session_id: str = Field(
+        default_factory=token_urlsafe,
+        primary_key=True,
+        index=True,
+        nullable=False,
+    )
+    username: str
 
 
 class UserBase(SQLModel):
