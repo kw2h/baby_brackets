@@ -1,8 +1,8 @@
 """Name
 
-Revision ID: d78bd9b08934
+Revision ID: 7c5292c1c458
 Revises: 
-Create Date: 2024-04-08 13:54:48.142686
+Create Date: 2024-04-10 22:53:56.040660
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd78bd9b08934'
+revision: str = '7c5292c1c458'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,6 +28,12 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id', name=op.f('pk_name'))
     )
     op.create_index(op.f('ix_name_id'), 'name', ['id'], unique=False)
+    op.create_table('sessiontoken',
+    sa.Column('session_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('username', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.PrimaryKeyConstraint('session_id', name=op.f('pk_sessiontoken'))
+    )
+    op.create_index(op.f('ix_sessiontoken_session_id'), 'sessiontoken', ['session_id'], unique=False)
     op.create_table('user',
     sa.Column('username', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
@@ -101,6 +107,8 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_user_id'), table_name='user')
     op.drop_index(op.f('ix_user_email'), table_name='user')
     op.drop_table('user')
+    op.drop_index(op.f('ix_sessiontoken_session_id'), table_name='sessiontoken')
+    op.drop_table('sessiontoken')
     op.drop_index(op.f('ix_name_id'), table_name='name')
     op.drop_table('name')
     # ### end Alembic commands ###
