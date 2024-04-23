@@ -1,0 +1,80 @@
+{% extends "pages/base-daisy.html" %}
+{% set active_page = "index" %}
+{% block content %}
+
+{% if session_token %}
+<div class="flex justify-center pt-12">
+    
+    <div class="card w-96 bg-base-100 shadow-xl pr-1 pl-1">
+        <div class="card-body items-center text-center">
+            <h2 class="card-title">Create a New Bracket Pool</h2>
+            <p>Expecting parents? Fill out a bracket and start a pool for family and friends!</p>
+            <div class="card-actions justify-end">
+                <a href="{{ url_for('create') }}" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card w-96 bg-base-100 shadow-xl pr-1 pl-1">
+        <div class="card-body items-center text-center">
+            <h2 class="card-title">Parents</h2>
+            <p>See your baby brackets and participants in your pool.</p>
+            
+            <div class="card-actions justify-end">
+                <label for="bracket-pools" class="drawer-button btn btn-primary">Show</label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card w-96 bg-base-100 shadow-xl pr-1 pl-1">
+        <div class="card-body items-center text-center">
+            <h2 class="card-title">Friends & Family</h2>
+            <p>See your baby brackets for the expecting parents</p>
+            <div class="card-actions justify-end">
+                <label for="brackets" class="drawer-button btn btn-primary">Show</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="drawer drawer-end justify-center">
+    <input id="bracket-pools" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="bracket-pools" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+        <!-- Sidebar content here -->
+        <li><a>Pool 1</a></li>
+        <li><a>Pool 2</a></li>
+        </ul>
+    </div>
+</div>
+<div class="drawer drawer-end justify-center">
+    <input id="brackets" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="brackets" aria-label="close sidebar" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+        <!-- Sidebar content here -->
+        <li><a>Bracket 1</a></li>
+        <li><a>Bracket 2</a></li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="hero min-h-screen" style="background-image: url(static/img/alona-kraft-225905.jpg);">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center text-neutral-content">
+    <div class="max-w-md">
+      <h1 class="mb-5 text-5xl font-bold">Baby Brackets</h1>
+      <p class="mb-5">Let your friends and family compete to see who can guess what the
+                      lucky parents-to-be name the newest addition to their family...
+                      NCAA Tournament style.</p>
+      <p class="mb-5">It's fantasy sports for baby naming!</p>
+      <a href="{{ url_for('register') }}" class="btn btn-primary">Sign up now!</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

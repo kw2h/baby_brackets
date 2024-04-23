@@ -1,0 +1,26 @@
+<!-- extend base layout -->
+{% extends "pages/base-daisy.html" %}
+{% set active_page = "create" %}
+{% block content %}
+
+<div class="flex justify-center">
+    <form class="form" action="" method="post" name="post">
+        {{ form.csrf_token }}
+        <label class="input input-bordered flex items-center gap-2">
+            {{ form.name(placeholder="Bracket Name", class_="grow") }}
+            {% if form.name.errors -%}
+            <span>{{ form.name.errors[0] }}</span>
+            {%- endif %}
+        </label>
+        <br/>
+        <input type="submit" class="btn btn-wide btn-primary self-center" value="Submit">
+    </form>
+</div>
+<div class="flex justify-center pt-24 pb-12">
+    <ul class="steps">
+        <li class="step step-primary pr-2 pl-2">Create your bracket</li>
+        <li class="step pr-2 pl-2">Fill out your bracket</li>
+        <li class="step pr-2 pl-2">Share your bracket</li>
+    </ul>
+</div>
+{% endblock %}

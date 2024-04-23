@@ -1,4 +1,5 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
+import json
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
@@ -8,6 +9,10 @@ from app.auth import get_password_hash, get_current_user_for_api
 from app.models import (User, UserUpdate, UserCreate, UserReadWithBrackets, 
                         ParentBracket, ParentBracketUpdate, Bracket, BracketUpdate,
                         Matchup, Name, NameMatchupLink)
+from app.load_names import load_names, prefix_search, random_name
+
+
+NAMES_DF = load_names("namesbystate.zip")
 
 
 user_router = SQLAlchemyCRUDRouter(
@@ -117,6 +122,12 @@ name_router = SQLAlchemyCRUDRouter(
     update_route=False,
     dependencies=[Depends(get_current_user_for_api)],
 )
+
+
+@name_router.get("/search/<query>")
+def search(query: str, sex: str):
+    names = prefix_search(NAMES_DF, query, sex)
+    return names
 
 
 namemtchuplink_router = SQLAlchemyCRUDRouter(

@@ -48,7 +48,10 @@ async def login_for_cookie_access_token(
 ) -> Dict[str, str]:
     user = await authenticate_user(form_data.username, form_data.password, db)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password"
+        )
     session_token: SessionToken = SessionToken(username=user.username)
     db.add(session_token)
     await db.commit()
@@ -64,14 +67,14 @@ async def login_for_cookie_access_token(
         value=f"Bearer {access_token}", 
         httponly=True  # prevents JavaScript from reading the cookie
     )  
-    return {settings.cookie_name: access_token, "token_type": "bearer"}
+    return {access_token: access_token, "token_type": "bearer"}
 
 
 @router.get("/auth/login", tags=["Auth"])
-async def get_login(request: Request) -> Any:
+async def login(request: Request) -> Any:
     form = forms.LoginForm(request)
     return templates.TemplateResponse(
-        "pages/login.html",
+        "pages/login-daisy.html",
         context={
             "request": request,
             "form": form,
@@ -92,7 +95,7 @@ async def post_login(
         await login_for_cookie_access_token(response=response, form_data=form_data, db=db)
     except HTTPException:
         return templates.TemplateResponse(
-            "pages/login.html",
+            "pages/login-daisy.html",
             context={
                 "request": request,
                 "form": form,
@@ -105,11 +108,15 @@ async def post_login(
 
 @router.get("/auth/logout", tags=["Auth"], response_class=HTMLResponse)
 async def logout(
+    response: Response, 
     session_token: SessionToken = Depends(get_session_from_token),
     db: AsyncSession = Depends(get_async_session)
 ):  
-    response = RedirectResponse("/index", status.HTTP_302_FOUND)
+    """
+    Both delete cookie and invalidate session token server side
+    """
     response.delete_cookie(settings.cookie_name)
     await db.delete(session_token)
     await db.commit()
+    response = RedirectResponse("/index", status.HTTP_302_FOUND)
     return response

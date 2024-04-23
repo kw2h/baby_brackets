@@ -50,7 +50,7 @@
                   {% if active_page == 'create' %}
                   class="active" ><a href="#">Create</a>
                   {% else %}
-                  ><a href="{# url_for('create') #}">Create</a>
+                  ><a href="{{ url_for('create') }}">Create</a>
                   {% endif %}
                 </li>
                 <li role="presentation" class="dropdown {% if active_page == 'edit' and parent_flag %}active{% endif %}">
@@ -79,16 +79,16 @@
               {% else %}
                 <li role="presentation"
                 {% if active_page == 'register' %}
-                  class="active" ><a href="{# url_for('register') #}">Sign Up</a>
+                  class="active" ><a href="{{ url_for('register') }}">Sign Up</a>
                 {% else %}
-                  ><a href="{# url_for('register') #}">Sign Up</a>
+                  ><a href="{{ url_for('register') }}">Sign Up</a>
                 </li>
                 {% endif %}
                 <li role="presentation"
                 {% if active_page == 'login' %}
-                  class="active" ><a href="{{ url_for('get_login') }}">Login</a>
+                  class="active" ><a href="{{ url_for('login') }}">Login</a>
                 {% else %}
-                  ><a href="{{ url_for('get_login') }}">Login</a>
+                  ><a href="{{ url_for('login') }}">Login</a>
                 </li>
                 {% endif %}
               {% endif %}

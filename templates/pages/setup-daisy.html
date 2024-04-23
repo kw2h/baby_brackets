@@ -1,0 +1,99 @@
+{% extends "pages/base-daisy.html" %}
+{% set active_page = "create" %}
+{% block content %}
+
+<form class="form" action="" method="post" name="post">
+    {{ form.csrf_token }}
+    <div class="grid grid-cols-6 gap-4 px-9">
+        <div class="text-center items-center">
+            <select name="size" id="size" class="select select-primary w-full max-w-xs" required>
+                {% for option in form.size %}
+                    {% if loop.first %}
+                        <option value="" disabled selected>Bracket Size</option>
+                    {% endif %}
+                    {{ option }}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="text-center items-center">
+            <select name="sex" id="sex" class="select select-primary w-full max-w-xs" required>
+                {% for option in form.sex %}
+                    {% if loop.first %}
+                        <option value="" disabled selected>Sex</option>
+                    {% endif %}
+                    {{ option }}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <br/>
+    <div class="grid grid-cols-4 gap-4">
+        <div class="text-center items-center">East Regional</div>
+        <div class="text-center items-center">West Regional</div>
+        <div class="text-center items-center">Midwest Regional</div>
+        <div class="text-center items-center">South Regional</div>
+        <div class="text-center items-center">
+            {{ form.name1(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name2(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name3(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name4(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name5(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name6(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name7(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name8(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name9(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name10(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name11(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name12(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name13(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name14(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name15(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+        </div>
+        <div class="text-center items-center">
+            {{ form.name16(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+        </div>
+    </div>
+    <br/>
+    <div class="grid grid-cols-1 gap-4">
+        <div class="text-center items-center">
+            <input type="submit" class="btn btn-lg btn-primary" value="Submit">
+        </div>
+    </div>
+</div>
+</form>
+<div class="flex justify-center pt-24 pb-12">
+    <ul class="steps">
+        <li class="step step-primary pr-2 pl-2">Create your bracket</li>
+        <li class="step step-primary pr-2 pl-2">Fill out your bracket</li>
+        <li class="step pr-2 pl-2">Share your bracket</li>
+    </ul>
+</div>
+{% endblock %}

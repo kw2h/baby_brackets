@@ -56,6 +56,12 @@ class OAuth2PasswordBearerWithCookie(OAuth2):
         return param
 
 
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED, 
+    detail="Could not validate credentials."
+)
+
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer_scheme = OAuth2PasswordBearer(tokenUrl="token_bearer")
 oauth2_cookie_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="token_cookie")
@@ -97,7 +103,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=120)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
     return encoded_jwt
@@ -123,10 +129,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
 
 
 async def decode_session(token: str, db: AsyncSession = Depends(get_async_session)) -> SessionToken:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, 
-        detail="Could not validate credentials."
-    )
     token = token.removeprefix("Bearer").strip()
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
@@ -145,11 +147,7 @@ async def get_current_user_for_api(
     token: Annotated[str, Depends(oauth2_bearer_scheme)],
     db: AsyncSession = Depends(get_async_session)
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+    credentials_exception.headers = {"WWW-Authenticate": "Bearer"}
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         username: str = payload.get("sub")
@@ -158,7 +156,7 @@ async def get_current_user_for_api(
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(username=token_data.username, db=db)
+    user = await get_user(username=token_data.username, db=db)
     if user is None:
         raise credentials_exception
     return user
@@ -189,6 +187,8 @@ async def get_session_from_token(
     authenticated users can see access the route.
     """
     session_token = await decode_session(token, db)
+    if not session_token:
+        raise credentials_exception
     return session_token
 
 

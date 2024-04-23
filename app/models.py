@@ -14,6 +14,7 @@ class HealthCheck(BaseModel):
 
 
 class Token(BaseModel):
+    """Bearer token for OAuth2"""
     access_token: str
     token_type: str
 
@@ -46,7 +47,7 @@ class UserBase(SQLModel):
     first_name: str | None = None
     last_name: str | None = None
     email: str = Field(index=True, unique=True, nullable=False)
-    role_id: str = Field(nullable=False)
+    role_id: str = Field(default=0, nullable=False)
     login_ct: int = 0
     created: datetime.datetime = datetime.datetime.now()
     last_seen: datetime.datetime = datetime.datetime.now()
@@ -64,7 +65,11 @@ class User(UUIDModel, UserBase, AsyncAttrs, table=True):
     )
 
 
-class UserCreate(UserBase): 
+class UserCreate(SQLModel):
+    username: str = Field(index=True, unique=True, nullable=False)
+    first_name: str | None = None
+    last_name: str | None = None
+    email: str = Field(index=True, unique=True, nullable=False)
     password: str
 
 

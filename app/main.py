@@ -1,13 +1,11 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app import settings
 from app.models import HealthCheck
-from app.routers.endpoints import (user_router, parentbracket_router, 
-                                  bracket_router, matchup_router,
-                                  name_router, namemtchuplink_router)
-from app.routers import root, login
+from app.routers import endpoints, views, login
 
 app = FastAPI(
     title=settings.project_name,
@@ -29,15 +27,21 @@ async def health_check():
     }
 
 
-app.include_router(user_router, prefix=settings.api_v1_prefix)
-app.include_router(parentbracket_router, prefix=settings.api_v1_prefix)
-app.include_router(bracket_router, prefix=settings.api_v1_prefix)
-app.include_router(matchup_router, prefix=settings.api_v1_prefix)
-app.include_router(name_router, prefix=settings.api_v1_prefix)
-app.include_router(namemtchuplink_router, prefix=settings.api_v1_prefix)
-app.include_router(root.router)
+app.include_router(endpoints.user_router, prefix=settings.api_v1_prefix)
+app.include_router(endpoints.parentbracket_router, prefix=settings.api_v1_prefix)
+app.include_router(endpoints.bracket_router, prefix=settings.api_v1_prefix)
+app.include_router(endpoints.matchup_router, prefix=settings.api_v1_prefix)
+app.include_router(endpoints.name_router, prefix=settings.api_v1_prefix)
+app.include_router(endpoints.namemtchuplink_router, prefix=settings.api_v1_prefix)
+app.include_router(views.router)
 app.include_router(login.router)
 
+@app.exception_handler(HTTPException)
+def auth_exception_handler(request: Request, exc: HTTPException):
+    """
+    Redirect the user to the login page if not logged in
+    """
+    return RedirectResponse(url="/auth/login")
 
 
 if __name__ == '__main__':

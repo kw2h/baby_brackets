@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Baby Brackets</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/favicon.ico">
+
+  </head>
+  <body>
+    <div class="navbar bg-base-100">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full">
+              <img alt="Logo" src="/static/img/logo.png" />
+            </div>
+        </div>
+        <div class="flex-1">
+          <a class="btn btn-ghost text-xl">Baby Brackets</a>
+        </div>
+        <div class="flex-none">
+          <ul class="menu menu-horizontal px-1">
+            <li><a href="/index">Home</a></li>
+            <li><a href="{# url_for('howto') #}">How It Works</a></li>
+            {% if session_token %}
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+            <!-- <li>
+              <details>
+                <summary>
+                  Parent
+                </summary>
+                <ul class="p-2 bg-base-100 rounded-t-none">
+                  <li><a>Link 1</a></li>
+                  <li><a>Link 2</a></li>
+                </ul>
+              </details>
+            </li> -->
+          </ul>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+
+    <footer class="footer footer-center p-4 bg-base-100">
+    <aside>
+        <p>Copyright © 2024 - Baby Brackets</p>
+    </aside>
+    </footer>
+  </body>
+</html>
