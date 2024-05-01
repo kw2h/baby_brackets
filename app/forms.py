@@ -49,6 +49,7 @@ class CreateForm(StarletteForm):
 
 
 class EditForm(StarletteForm):
+    bracket_id = HiddenField("bracket_id")
     size = SelectField("Bracket Size",
                        choices=[("16","16"),
                            #    ("32","32"),
@@ -56,7 +57,7 @@ class EditForm(StarletteForm):
                                ],
                        validators=[DataRequired()])
     sex = SelectField("Sex",
-                       choices=[("","It's a Surprise!"), ("M", "M"), ("F", "F"),])
+                       choices=[("none","It's a Surprise!"), ("M", "M"), ("F", "F"),])
     name1 = StringField("", validators=[DataRequired()])
     name2 = StringField("", validators=[DataRequired()])
     name3 = StringField("", validators=[DataRequired()])

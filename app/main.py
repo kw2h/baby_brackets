@@ -2,16 +2,20 @@ import uvicorn
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware import Middleware
+from starlette.middleware.sessions import SessionMiddleware
 
 from app import settings
 from app.models import HealthCheck
-from app.routers import endpoints, views, login
+from app.routers import endpoints, views, login, partials
+
 
 app = FastAPI(
     title=settings.project_name,
     version=settings.version,
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
-    debug=settings.debug
+    debug=settings.debug,
+    middleware=[Middleware(SessionMiddleware, secret_key=settings.secret_key)]
 )
 
 
@@ -35,6 +39,8 @@ app.include_router(endpoints.name_router, prefix=settings.api_v1_prefix)
 app.include_router(endpoints.namemtchuplink_router, prefix=settings.api_v1_prefix)
 app.include_router(views.router)
 app.include_router(login.router)
+app.include_router(partials.router)
+
 
 @app.exception_handler(HTTPException)
 def auth_exception_handler(request: Request, exc: HTTPException):

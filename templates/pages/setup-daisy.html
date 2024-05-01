@@ -1,9 +1,14 @@
 {% extends "pages/base-daisy.html" %}
 {% set active_page = "create" %}
 {% block content %}
-
+<script>
+    function checkUserKeydown(event) {
+      return event instanceof KeyboardEvent
+    }
+</script>
 <form class="form" action="" method="post" name="post">
     {{ form.csrf_token }}
+    {{ form.bracket_id(value=bracket_id) }}
     <div class="grid grid-cols-6 gap-4 px-9">
         <div class="text-center items-center">
             <select name="size" id="size" class="select select-primary w-full max-w-xs" required>
@@ -25,7 +30,21 @@
                 {% endfor %}
             </select>
         </div>
+        <div class="text-center items-center">
+            <button type="button" class="btn btn-primary random-name" 
+                _="on click
+                   for i in .input
+                     if i.value == '' or i.value == null then
+                       set sex to #sex.value
+                       if sex then set url to `/randomname/${sex}` else set url to '/randomname' end
+                       fetch `${url}` then set i.value to it.slice(1,-1)
+                     end
+                   end">
+                   Randomly Fill the Rest
+            </button>
+        </div>
     </div>
+
     <br/>
     <div class="grid grid-cols-4 gap-4">
         <div class="text-center items-center">East Regional</div>
@@ -33,52 +52,100 @@
         <div class="text-center items-center">Midwest Regional</div>
         <div class="text-center items-center">South Regional</div>
         <div class="text-center items-center">
-            {{ form.name1(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+            <input type="text" id="name1" placeholder="1 Seed" list="name1List" name="name1" hx-get="/searchname" hx-target="#name1List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name1List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name2(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+            <input type="text" id="name2" placeholder="1 Seed" list="name2List" name="name2" hx-get="/searchname" hx-target="#name2List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name2List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name3(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+            <input type="text" id="name3" placeholder="1 Seed" list="name3List" name="name3" hx-get="/searchname" hx-target="#name3List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name3List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name4(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='1 Seed') }}
+            <input type="text" id="name4" placeholder="1 Seed" list="name4List" name="name4" hx-get="/searchname" hx-target="#name4List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name4List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name5(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+            <input type="text" id="name5" placeholder="2 Seed" list="name5List" name="name5" hx-get="/searchname" hx-target="#name5List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name5List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name6(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+            <input type="text" id="name6" placeholder="2 Seed" list="name6List" name="name6" hx-get="/searchname" hx-target="#name6List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name6List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name7(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+            <input type="text" id="name7" placeholder="2 Seed" list="name7List" name="name7" hx-get="/searchname" hx-target="#name7List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name7List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name8(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='2 Seed') }}
+            <input type="text" id="name8" placeholder="2 Seed" list="name8List" name="name8" hx-get="/searchname" hx-target="#name8List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name8List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name9(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+            <input type="text" id="name9" placeholder="3 Seed" list="name9List" name="name9" hx-get="/searchname" hx-target="#name9List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name9List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name10(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+            <input type="text" id="name10" placeholder="3 Seed" list="name10List" name="name10" hx-get="/searchname" hx-target="#name10List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name10List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name11(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+            <input type="text" id="name11" placeholder="3 Seed" list="name11List" name="name11" hx-get="/searchname" hx-target="#name11List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name11List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name12(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='3 Seed') }}
+            <input type="text" id="name12" placeholder="3 Seed" list="name12List" name="name12" hx-get="/searchname" hx-target="#name12List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name12List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name13(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+            <input type="text" id="name13" placeholder="4 Seed" list="name13List" name="name13" hx-get="/searchname" hx-target="#name13List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name13List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name14(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+            <input type="text" id="name14" placeholder="4 Seed" list="name14List" name="name14" hx-get="/searchname" hx-target="#name14List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name14List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name15(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+            <input type="text" id="name15" placeholder="4 Seed" list="name15List" name="name15" hx-get="/searchname" hx-target="#name15List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name15List"></datalist>
         </div>
         <div class="text-center items-center">
-            {{ form.name16(size=30, maxlength=140, class='input input-bordered w-full max-w-xs', placeholder='4 Seed') }}
+            <input type="text" id="name16" placeholder="4 Seed" list="name16List" name="name16" hx-get="/searchname" hx-target="#name16List"
+                hx-trigger="keyup[checkUserKeydown.call(this, event)] changed delay:25ms" class="input input-bordered w-full max-w-xs"
+            />
+            <datalist id="name16List"></datalist>
         </div>
     </div>
     <br/>

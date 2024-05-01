@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Annotated, Any, Dict
 
-from app import templates, forms, settings
+from app import templates, forms, settings, flash
 from app.auth import authenticate_user, create_access_token, get_session_from_token
 from app.database import get_async_session
 from app.models import Token, SessionToken
@@ -77,8 +77,7 @@ async def login(request: Request) -> Any:
         "pages/login-daisy.html",
         context={
             "request": request,
-            "form": form,
-            "errors": []
+            "form": form
         }
     )
 
@@ -94,12 +93,12 @@ async def post_login(
     try:
         await login_for_cookie_access_token(response=response, form_data=form_data, db=db)
     except HTTPException:
+        flash(request, "Incorrect Email or Password", "alert-error")
         return templates.TemplateResponse(
             "pages/login-daisy.html",
             context={
                 "request": request,
-                "form": form,
-                "errors": ["Incorrect Email or Password"]
+                "form": form
             }
         )
 
